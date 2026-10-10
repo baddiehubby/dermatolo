@@ -1,12 +1,14 @@
 {
-  "name": "herbs-and-heal",
+  "name": "kaptaan804",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "generate:catalog": "node scripts/generate-catalog.mjs"
   },
   "dependencies": {
     "next": "16.4.0",
