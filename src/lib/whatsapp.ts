@@ -1,3 +1,4 @@
+import { getProduct } from "@/data/products";
 import { site } from "@/data/site";
 import { formatPKR } from "@/lib/format";
 import { t } from "@/lib/i18n";
@@ -15,6 +16,20 @@ export function buildWhatsAppFallbackUrl(message: string) {
   return `https://api.whatsapp.com/send?phone=${whatsappNumber()}&text=${encodeURIComponent(message)}`;
 }
 
+function localizedProductName(product: Product, locale: Locale) {
+  return t(product.name, locale);
+}
+
+function cartLineName(item: CartItem, locale: Locale) {
+  const product = getProduct(item.slug);
+  const name = product ? localizedProductName(product, locale) : item.name;
+  const option =
+    item.variantTitle && item.variantTitle !== "Standard" && item.variantTitle !== "اسٹینڈرڈ"
+      ? ` (${item.variantTitle})`
+      : "";
+  return `${name}${option}`;
+}
+
 export function productOrderMessage(
   product: Product,
   quantity: number,
@@ -23,7 +38,6 @@ export function productOrderMessage(
 ) {
   const selected = variant ?? product.variants[0];
   const unit = selected?.price ?? product.price;
-  const total = unit * quantity;
   const variantTitle = selected ? t(selected.title, locale) : "";
   const variantLine =
     selected && variantTitle && variantTitle !== "Standard" && variantTitle !== "اسٹینڈرڈ"
@@ -32,69 +46,52 @@ export function productOrderMessage(
         : `Option: ${variantTitle}\n`
       : "";
 
+  const priceLine =
+    locale === "ur"
+      ? `قیمت: ${Math.round(unit).toLocaleString("en-PK")} روپے\n`
+      : `Price: ${formatPKR(unit)}\n`;
+  const page = `${site.url}/products/${product.slug}`;
+
   if (locale === "ur") {
-    return `السلام علیکم، میں ${t(product.name, locale)} آرڈر کرنا چاہتا ہوں۔
-
-پروڈکٹ: ${t(product.name, locale)}
-${variantLine}قیمت: ${formatPKR(unit)}
-مقدار: ${quantity}
-سب ٹوٹل: ${formatPKR(total)}
-
-براہِ کرم دستیابی اور ڈیلیوری چارجز کنفرم کریں۔`;
+    return `السلام علیکم، میں Kaptaan804 سے ${localizedProductName(product, locale)} آرڈر کرنا چاہتا/چاہتی ہوں۔
+${variantLine}مقدار: ${quantity}
+${priceLine}صفحہ: ${page}
+براہِ کرم دستیابی، کل قیمت اور ڈیلیوری کی تفصیلات بتا دیں۔`;
   }
 
-  return `Assalam-o-Alaikum! I would like to order:
-
-Product: ${t(product.name, locale)}
-${variantLine}Price: ${formatPKR(unit)}
-Quantity: ${quantity}
-Subtotal: ${formatPKR(total)}
-
-Please confirm availability and delivery charges.`;
+  return `Hello Kaptaan804, I would like to order ${localizedProductName(product, locale)}.
+${variantLine}Quantity: ${quantity}
+${priceLine}Page: ${page}
+Please confirm availability, total price, and delivery details.`;
 }
 
 export function cartOrderMessage(items: CartItem[], locale: Locale = "en") {
-  const merchandise = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
   if (locale === "ur") {
     const lines = items.map((item, index) => {
-      const option =
-        item.variantTitle && item.variantTitle !== "Standard" && item.variantTitle !== "اسٹینڈرڈ"
-          ? ` (${item.variantTitle})`
-          : "";
-      return `${index + 1}. ${item.name}${option}
-   مقدار: ${item.quantity} × ${formatPKR(item.price)} = ${formatPKR(item.price * item.quantity)}`;
+      const line = Math.round(item.price).toLocaleString("en-PK");
+      return `${index + 1}. ${cartLineName(item, locale)}
+مقدار: ${item.quantity}
+قیمت: ${line} روپے`;
     });
-    return `السلام علیکم، میں یہ آرڈر کرنا چاہتا ہوں:
-
+    return `السلام علیکم، میں Kaptaan804 سے یہ آرڈر کرنا چاہتا/چاہتی ہوں۔
 ${lines.join("\n")}
-
-سب ٹوٹل: ${formatPKR(merchandise)}
-
-براہِ کرم دستیابی اور ڈیلیوری چارجز کنفرم کریں۔`;
+براہِ کرم دستیابی، کل قیمت اور ڈیلیوری کی تفصیلات بتا دیں۔`;
   }
 
   const lines = items.map((item, index) => {
-    const option =
-      item.variantTitle && item.variantTitle !== "Standard"
-        ? ` (${item.variantTitle})`
-        : "";
-    return `${index + 1}. ${item.name}${option}
-   Qty: ${item.quantity} × ${formatPKR(item.price)} = ${formatPKR(item.price * item.quantity)}`;
+    return `${index + 1}. ${cartLineName(item, locale)}
+Quantity: ${item.quantity}
+Price: ${formatPKR(item.price)}`;
   });
 
-  return `Assalam-o-Alaikum! I would like to order:
-
+  return `Hello Kaptaan804, I would like to order:
 ${lines.join("\n")}
-
-Subtotal: ${formatPKR(merchandise)}
-
-Please confirm availability and delivery charges.`;
+Please confirm availability, total price, and delivery details.`;
 }
 
 export function generalEnquiryMessage(locale: Locale = "en") {
   if (locale === "ur") {
-    return `السلام علیکم، مجھے ${site.productNameUr} کے بارے میں معلومات درکار ہیں۔`;
+    return `السلام علیکم، مجھے Kaptaan804 کی مصنوعات کے بارے میں معلومات درکار ہیں۔`;
   }
-  return `Assalam-o-Alaikum, I would like information about ${site.productName} and KAPTAAN 804 products.`;
+  return `Hello Kaptaan804, I would like information about products on Kaptaan804.com.`;
 }

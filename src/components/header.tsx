@@ -9,15 +9,16 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { SearchDialog } from "@/components/search-dialog";
 import { useCart } from "@/lib/cart-context";
 import { useLanguage } from "@/lib/language";
+import { buildWhatsAppUrl, generalEnquiryMessage } from "@/lib/whatsapp";
 
 export function Header() {
   const { count, openCart } = useCart();
-  const { tx } = useLanguage();
+  const { tx, locale } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/8 bg-[#070708]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-[#f3eee4]/8 bg-[#070708]/90 backdrop-blur-md">
       <div className="mx-auto flex h-[76px] max-w-6xl items-center justify-between gap-3 px-4">
         <button
           type="button"
@@ -33,7 +34,7 @@ export function Header() {
         </button>
 
         <Link href="/" className="mx-auto md:mx-0">
-          <BrandLockup />
+          <BrandLockup compact />
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-[#f3eee4] md:flex">
@@ -45,9 +46,15 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            <LanguageSwitcher />
-          </div>
+          <a
+            href={buildWhatsAppUrl(generalEnquiryMessage(locale))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden h-11 items-center rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white lg:inline-flex"
+          >
+            {tx(copy.actions.whatsapp)}
+          </a>
+          <LanguageSwitcher />
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-full text-[#f3eee4]"
@@ -83,6 +90,14 @@ export function Header() {
               </button>
             </div>
             <LanguageSwitcher />
+            <a
+              href={buildWhatsAppUrl(generalEnquiryMessage(locale))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex h-12 items-center justify-center rounded-full bg-[#25D366] px-4 text-sm font-semibold text-white"
+            >
+              {tx(copy.actions.whatsapp)}
+            </a>
             <div className="mt-8 grid gap-4 text-lg font-semibold">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { getCategory } from "@/data/categories";
 import { copy } from "@/data/copy";
 import { videosForProduct } from "@/data/productVideos";
 import { useCart } from "@/lib/cart-context";
@@ -17,9 +18,10 @@ export function ProductCard({ product }: { product: Product }) {
   const image = product.images[0];
   const variant = product.variants[0];
   const hasVideo = videosForProduct(product.slug).length > 0;
+  const category = getCategory(product.category);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-white/8 bg-[#111113]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[1.6rem] border border-[#f3eee4]/8 bg-[#111113]">
       <Link href={`/products/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden bg-black">
         {image ? (
           <Image
@@ -34,27 +36,41 @@ export function ProductCard({ product }: { product: Product }) {
             {tx(product.name)}
           </div>
         )}
-        {hasVideo ? (
-          <span className="absolute left-3 top-3 rounded-full bg-[#c9a227] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#070708]">
-            {tx(copy.product.hasVideo)}
-          </span>
-        ) : null}
+        <div className="absolute start-3 top-3 flex flex-col gap-2">
+          {product.bestseller ? (
+            <span className="rounded-full bg-[#c9a227] px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#070708]">
+              {tx(copy.product.bestseller)}
+            </span>
+          ) : null}
+          {hasVideo ? (
+            <span className="rounded-full bg-[#070708]/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#f3eee4]">
+              {tx(copy.product.hasVideo)}
+            </span>
+          ) : null}
+        </div>
       </Link>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
           <p className="text-[11px] uppercase tracking-[0.16em] text-[#c9a227]">
-            {tx(copy.nav.shop)}
+            {category ? tx(category.name) : tx(copy.nav.shop)}
           </p>
           <Link href={`/products/${product.slug}`} className="mt-1 block font-semibold leading-snug text-[#f3eee4]">
             {tx(product.name)}
           </Link>
-          <p className="mt-2 text-lg font-bold text-[#c9a227]">{formatPKR(product.price)}</p>
+          <p className="mt-2 text-lg font-bold text-[#c9a227]">
+            {formatPKR(product.price)}
+            {product.compareAtPrice && product.compareAtPrice > product.price ? (
+              <span className="ms-2 text-sm font-medium text-[#f3eee4]/40 line-through">
+                {formatPKR(product.compareAtPrice)}
+              </span>
+            ) : null}
+          </p>
         </div>
         <p className="line-clamp-2 text-sm leading-6 text-[#f3eee4]/60">{tx(product.description)}</p>
         <div className="mt-auto flex flex-col gap-2">
           <Link
             href={`/products/${product.slug}`}
-            className="flex h-11 items-center justify-center rounded-full border border-white/15 text-sm font-semibold text-[#f3eee4]"
+            className="flex h-11 items-center justify-center rounded-full border border-[#f3eee4]/15 text-sm font-semibold text-[#f3eee4]"
           >
             {tx(copy.actions.viewProduct)}
           </Link>

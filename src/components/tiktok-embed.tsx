@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { extractTikTokId } from "@/lib/tiktok";
 
 function subscribe() {
@@ -29,9 +29,23 @@ export function TikTokEmbed({
   const id = extractTikTokId(url);
   const local = useSyncExternalStore(subscribe, isLocalhost, () => true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
   const reduced =
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const allowIframe = Boolean(id) && !local && Boolean(active);
+  const playing = Boolean(active && inView && !reduced);
+  const allowIframe = Boolean(id) && !local && playing;
+
+  useEffect(() => {
+    const node = boxRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(Boolean(entry?.isIntersecting && entry.intersectionRatio >= 0.4)),
+      { threshold: [0.4] },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -46,16 +60,16 @@ export function TikTokEmbed({
   useEffect(() => {
     const node = videoRef.current;
     if (!node) return;
-    if (active && !reduced) {
+    if (playing) {
       node.play().catch(() => undefined);
     } else {
       node.pause();
     }
-  }, [active, reduced]);
+  }, [playing]);
 
   if (nativeVideoUrl) {
     return (
-      <div className="relative aspect-[9/16] overflow-hidden bg-black">
+      <div ref={boxRef} className="relative aspect-[9/16] overflow-hidden bg-black">
         <video
           ref={videoRef}
           src={nativeVideoUrl}
@@ -66,7 +80,9 @@ export function TikTokEmbed({
           controls
           preload="metadata"
           className="absolute inset-0 h-full w-full object-cover"
-        />
+        >
+          {title}
+        </video>
       </div>
     );
   }
@@ -85,7 +101,7 @@ export function TikTokEmbed({
   }
 
   return (
-    <div className="relative aspect-[9/16] overflow-hidden bg-[#111113]">
+    <div ref={boxRef} className="relative aspect-[9/16] overflow-hidden bg-[#111113]">
       {allowIframe ? (
         <iframe
           src={`https://www.tiktok.com/embed/v2/${id}`}
@@ -106,7 +122,7 @@ export function TikTokEmbed({
             rel="noopener noreferrer"
             className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 p-4 text-center text-white"
           >
-            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-2xl text-[#070708]">
+            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#111113]/90 text-2xl text-white">
               ▶
             </span>
             <span className="mt-3 text-sm font-semibold">{title}</span>

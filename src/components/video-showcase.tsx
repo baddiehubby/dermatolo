@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { copy } from "@/data/copy";
 import { getProduct } from "@/data/products";
 import { configuredVideos, featuredVideos } from "@/data/productVideos";
@@ -21,6 +21,7 @@ export function VideoShowcase({
   productSlug?: string;
 }) {
   const { locale, tx } = useLanguage();
+  const scrollerRef = useRef<HTMLDivElement>(null);
   const items = useMemo(() => {
     const source = productSlug
       ? configuredVideos().filter((video) => video.productSlug === productSlug)
@@ -48,20 +49,36 @@ export function VideoShowcase({
     return () => window.clearInterval(timer);
   }, [items.length, paused]);
 
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const card = scroller?.children[index] as HTMLElement | undefined;
+    if (!scroller || !card) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scroller.scrollTo({
+      left: card.offsetLeft - 16,
+      behavior: reduce ? "auto" : "smooth",
+    });
+  }, [index]);
+
   if (items.length === 0) {
     return (
       <section id="videos" className="mx-auto max-w-6xl px-4 py-16">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c9a227]">KAPTAAN 804</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c9a227]">{site.name}</p>
         <h2 className="mt-2 font-[family-name:var(--font-display)] text-3xl text-[#f3eee4] md:text-4xl">
           {tx(copy.sections.videos)}
         </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-[#f3eee4]/65">{tx(copy.sections.videosEmpty)}</p>
-        <Link
-          href="/products"
-          className="mt-6 inline-flex rounded-full bg-[#c9a227] px-5 py-3 text-sm font-semibold text-[#070708]"
-        >
-          {tx(copy.actions.shop)}
-        </Link>
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-[#f3eee4]/65">{tx(copy.sections.videosSub)}</p>
+        <div className="mt-8 rounded-[1.6rem] border border-[#f3eee4]/10 bg-[#111113] p-6">
+          <p className="max-w-2xl text-sm leading-7 text-[#f3eee4]/70">{tx(copy.sections.videosEmpty)}</p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/products"
+                className="inline-flex rounded-full bg-[#c9a227] px-5 py-3 text-sm font-semibold text-[#070708]"
+              >
+                {tx(copy.actions.shop)}
+              </Link>
+            </div>
+        </div>
       </section>
     );
   }
@@ -72,7 +89,7 @@ export function VideoShowcase({
     <section id="videos" className="mx-auto max-w-6xl px-4 py-16">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c9a227]">KAPTAAN 804</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c9a227]">{site.name}</p>
           <h2 className="mt-2 font-[family-name:var(--font-display)] text-3xl text-[#f3eee4] md:text-4xl">
             {tx(copy.sections.videos)}
           </h2>
@@ -81,22 +98,28 @@ export function VideoShowcase({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="rounded-full border border-white/15 px-3 py-2 text-xs font-semibold text-[#f3eee4]"
-            onClick={() => setIndex((current) => (current - 1 + visible.length) % visible.length)}
+            className="rounded-full border border-[#f3eee4]/15 px-3 py-2 text-xs font-semibold text-[#f3eee4]"
+            onClick={() => {
+              setPaused(true);
+              setIndex((current) => (current - 1 + visible.length) % visible.length);
+            }}
           >
             {tx(copy.actions.prev)}
           </button>
           <button
             type="button"
-            className="rounded-full border border-white/15 px-3 py-2 text-xs font-semibold text-[#f3eee4]"
+            className="rounded-full border border-[#f3eee4]/15 px-3 py-2 text-xs font-semibold text-[#f3eee4]"
             onClick={() => setPaused((value) => !value)}
           >
             {paused ? tx(copy.actions.play) : tx(copy.actions.pause)}
           </button>
           <button
             type="button"
-            className="rounded-full border border-white/15 px-3 py-2 text-xs font-semibold text-[#f3eee4]"
-            onClick={() => setIndex((current) => (current + 1) % visible.length)}
+            className="rounded-full border border-[#f3eee4]/15 px-3 py-2 text-xs font-semibold text-[#f3eee4]"
+            onClick={() => {
+              setPaused(true);
+              setIndex((current) => (current + 1) % visible.length);
+            }}
           >
             {tx(copy.actions.next)}
           </button>
@@ -104,13 +127,19 @@ export function VideoShowcase({
       </div>
 
       <div
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-3 md:overflow-visible"
+        ref={scrollerRef}
+        dir="ltr"
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4"
         onPointerDown={() => setPaused(true)}
+        onWheel={() => setPaused(true)}
       >
         {visible.map(({ video, product }, cardIndex) => (
           <article
             key={video.id}
-            className="w-[78vw] max-w-sm shrink-0 snap-center overflow-hidden rounded-[1.6rem] border border-white/8 bg-[#111113] md:w-auto"
+            dir={locale === "ur" ? "rtl" : "ltr"}
+            className={`w-[min(78vw,280px)] shrink-0 snap-start overflow-hidden rounded-[1.6rem] border bg-[#111113] ${
+              cardIndex === index ? "border-[#c9a227]/50" : "border-[#f3eee4]/8"
+            }`}
           >
             <TikTokEmbed
               url={video.tiktokUrl}
@@ -127,9 +156,14 @@ export function VideoShowcase({
               <h3 className="font-semibold text-[#f3eee4]">{tx(product!.name)}</h3>
               <p className="text-sm text-[#f3eee4]/60">{tx(video.description)}</p>
               <p className="font-bold text-[#c9a227]">{formatPKR(product!.price)}</p>
-              <Link href={`/products/${product!.slug}`} className="block text-sm underline">
-                {tx(copy.actions.viewProduct)}
-              </Link>
+              <div className="flex flex-wrap gap-3 text-sm">
+                <a href={video.tiktokUrl} target="_blank" rel="noopener noreferrer" className="underline">
+                  {tx(copy.actions.watchVideo)}
+                </a>
+                <Link href={`/products/${product!.slug}`} className="underline">
+                  {tx(copy.actions.viewProduct)}
+                </Link>
+              </div>
               <WhatsAppButton
                 message={productOrderMessage(product!, 1, product!.variants[0], locale)}
                 className="flex h-11 items-center justify-center rounded-full bg-[#25D366] text-sm font-semibold text-white"

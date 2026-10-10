@@ -14,7 +14,7 @@ export function QuantitySelector({
   onChange,
 }: Props) {
   return (
-    <div className="inline-flex items-center rounded-full border border-white/15 bg-[#111113] text-[#f3eee4]">
+    <div className="inline-flex items-center rounded-full border border-[#f3eee4]/15 bg-[#111113] text-[#f3eee4]">
       <button
         type="button"
         className="h-10 w-10 text-lg"
@@ -34,7 +34,7 @@ export function QuantitySelector({
           if (Number.isNaN(next)) return;
           onChange(Math.min(max, Math.max(min, next)));
         }}
-        className="h-10 w-12 border-x border-white/15 bg-transparent text-center text-sm font-semibold outline-none"
+        className="h-10 w-12 border-x border-[#f3eee4]/15 bg-transparent text-center text-sm font-semibold outline-none"
         aria-label="Quantity"
       />
       <button

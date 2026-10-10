@@ -15,7 +15,7 @@ export function StickyWhatsApp() {
   const message = items.length ? cartOrderMessage(items, locale) : generalEnquiryMessage(locale);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 280);
+    const onScroll = () => setVisible(window.scrollY > 640);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

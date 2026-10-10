@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { copy } from "@/data/copy";
+import { getProduct } from "@/data/products";
 import { site } from "@/data/site";
 import { QuantitySelector } from "@/components/quantity-selector";
 import { WhatsAppButton } from "@/components/whatsapp-button";
@@ -23,7 +24,7 @@ export function CartDrawer() {
         className="absolute inset-y-0 end-0 flex h-full w-full max-w-md flex-col bg-[#111113] text-[#f3eee4] shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-white/8 px-5 py-4">
+        <div className="flex items-center justify-between border-b border-[#f3eee4]/8 px-5 py-4">
           <h2 className="text-lg font-semibold">{tx(copy.cart.title)}</h2>
           <button type="button" onClick={closeCart} className="text-2xl leading-none">
             ×
@@ -44,15 +45,18 @@ export function CartDrawer() {
         ) : (
           <>
             <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4">
-              {items.map((item) => (
-                <div key={item.key} className="flex gap-3 border-b border-white/8 pb-4">
+              {items.map((item) => {
+                const product = getProduct(item.slug);
+                const label = product ? tx(product.name) : item.name;
+                return (
+                <div key={item.key} className="flex gap-3 border-b border-[#f3eee4]/8 pb-4">
                   <Link
                     href={`/products/${item.slug}`}
                     onClick={closeCart}
                     className="relative h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-black"
                   >
                     {item.image ? (
-                      <Image src={item.image} alt={item.name} fill className="object-cover" sizes="64px" />
+                      <Image src={item.image} alt={label} fill className="object-cover" sizes="64px" />
                     ) : null}
                   </Link>
                   <div className="min-w-0 flex-1">
@@ -61,7 +65,7 @@ export function CartDrawer() {
                       onClick={closeCart}
                       className="line-clamp-2 text-sm font-semibold"
                     >
-                      {item.name}
+                      {label}
                     </Link>
                     <p className="mt-1 text-sm text-[#c9a227]">{formatPKR(item.price)}</p>
                     <div className="mt-2 flex items-center justify-between">
@@ -75,12 +79,13 @@ export function CartDrawer() {
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
               <button type="button" className="text-xs text-[#f3eee4]/40 underline" onClick={clearCart}>
                 {tx(copy.cart.clear)}
               </button>
             </div>
-            <div className="border-t border-white/8 p-5">
+            <div className="border-t border-[#f3eee4]/8 p-5">
               <div className="mb-2 flex items-center justify-between text-sm">
                 <span>{tx(copy.product.lineTotal)}</span>
                 <strong>{formatPKR(subtotal)}</strong>

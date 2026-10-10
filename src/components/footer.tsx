@@ -4,13 +4,13 @@ import { categoriesWithProducts } from "@/data/products";
 import { site } from "@/data/site";
 import { BrandLockup } from "@/components/brand-mark";
 import { Bilingual } from "@/components/bilingual";
-import { buildWhatsAppUrl, generalEnquiryMessage } from "@/lib/whatsapp";
+import { FooterWhatsApp } from "@/components/footer-whatsapp";
 
 export function Footer() {
   const shop = categoriesWithProducts();
 
   return (
-    <footer className="mt-auto border-t border-white/8 bg-[#070708] text-[#f3eee4]">
+    <footer className="mt-auto border-t border-[#f3eee4]/8 bg-[#070708] text-[#f3eee4]">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-4">
         <div>
           <BrandLockup />
@@ -70,18 +70,15 @@ export function Footer() {
         </div>
         <div>
           <Bilingual value={copy.footer.orders} className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[#c9a227]" as="h2" />
-          <p className="text-sm">{site.whatsappDisplay}</p>
-          <a
-            href={buildWhatsAppUrl(generalEnquiryMessage("en"))}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex rounded-full bg-[#25D366] px-4 py-2 text-sm font-semibold text-white"
-          >
-            <Bilingual value={copy.actions.message} />
-          </a>
+          <p className="text-sm" dir="ltr">
+            {site.whatsappDisplay}
+          </p>
+          <div className="mt-4">
+            <FooterWhatsApp />
+          </div>
         </div>
       </div>
-      <div className="border-t border-white/8 px-4 py-4 text-center text-xs text-[#f3eee4]/50">
+      <div className="border-t border-[#f3eee4]/8 px-4 py-4 text-center text-xs text-[#f3eee4]/50">
         <Bilingual value={copy.footer.medical} as="p" />
         <p className="mt-2">
           © {new Date().getFullYear()} {site.legalName}. {site.city}.

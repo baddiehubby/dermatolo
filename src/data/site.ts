@@ -4,12 +4,12 @@ export const site = {
   productName: "Eagle Delay Spray",
   productNameUr: "ایگل ڈیلے اسپرے",
   tagline: {
-    en: "More time. More confidence.",
-    ur: "اعتماد کے ساتھ زیادہ دیر",
+    en: "REAL SUPPORT. REAL ACTION.",
+    ur: "اصل سپورٹ۔ اصل عمل۔",
   },
   description: {
-    en: "KAPTAAN 804 is a Karachi storefront for Eagle Delay Spray and other personal-care products, with WhatsApp ordering and cash on delivery.",
-    ur: "کپتان ۸۰۴ کراچی میں ایگل ڈیلے اسپرے اور ذاتی دیکھ بھال کی مصنوعات کا اسٹور ہے — آرڈر واٹس ایپ پر، ادائیگی کیش آن ڈیلیوری۔",
+    en: "KAPTAAN 804 — Real support. Real action. Shop Eagle Delay Spray and personal-care products in Karachi on WhatsApp.",
+    ur: "کپتان ۸۰۴ — اصل سپورٹ۔ اصل عمل۔ کراچی میں ایگل ڈیلے اسپرے اور ذاتی دیکھ بھال کی مصنوعات واٹس ایپ پر آرڈر کریں۔",
   },
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.kaptaan804.com",
   locale: "en_PK",
@@ -20,7 +20,7 @@ export const site = {
   city: "Karachi, Pakistan",
   announcement: {
     en: "Karachi same-day free delivery · Cash on delivery · Discreet packing · 18+",
-    ur: "کراچی بھر میں فری اور اسی دن ڈیلیوری · کیش آن ڈیلیوری · ڈسکریٹ پیکنگ · ۱۸+",
+    ur: "کراچی بھر میں فری اور اسی دن ڈیلیوری · کیش آن ڈیلیوری · ڈسکریٹ پیکنگ · \u206618+\u2069",
   },
   deliveryNote: {
     en: "Karachi delivery is advertised as free and same-day, depending on order time and rider availability. Confirm the slot on WhatsApp before you send the order.",
@@ -35,7 +35,8 @@ export const site = {
 export const navLinks = [
   { href: "/", key: "home" as const },
   { href: "/products", key: "shop" as const },
+  { href: "/#categories", key: "categories" as const },
   { href: "/videos", key: "videos" as const },
-  { href: "/faq", key: "faq" as const },
+  { href: "/about", key: "about" as const },
   { href: "/contact", key: "contact" as const },
 ];

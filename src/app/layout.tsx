@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Noto_Naskh_Arabic, Outfit } from "next/font/google";
+import { Cormorant_Garamond, Noto_Nastaliq_Urdu, Outfit } from "next/font/google";
 import { site } from "@/data/site";
 import { AnnouncementBar } from "@/components/announcement-bar";
 import { Footer } from "@/components/footer";
@@ -18,7 +18,7 @@ const display = Cormorant_Garamond({
   weight: ["500", "600", "700"],
 });
 
-const urdu = Noto_Naskh_Arabic({
+const urdu = Noto_Nastaliq_Urdu({
   variable: "--font-urdu",
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
@@ -27,7 +27,7 @@ const urdu = Noto_Naskh_Arabic({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "KAPTAAN 804 | Eagle Delay Spray Karachi",
+    default: "KAPTAAN 804 | Real Support. Real Action.",
     template: `%s | KAPTAAN 804`,
   },
   description: site.description.en,
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     locale: site.locale,
     url: site.url,
     siteName: site.name,
-    title: "KAPTAAN 804 | Eagle Delay Spray Karachi",
+    title: "KAPTAAN 804 | Real Support. Real Action.",
     description: site.description.en,
     images: [{ url: "/images/product/hero.jpg" }],
   },
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           <AnnouncementBar />
           <Header />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 pb-24">{children}</main>
           <Footer />
         </Providers>
       </body>

@@ -6,7 +6,7 @@ import { FaqList } from "@/components/faq-list";
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "KAPTAAN 804 ordering, delivery, and product questions.",
+  description: "KAPTAAN 804 ordering and delivery questions.",
   alternates: { canonical: "/faq" },
 };
 

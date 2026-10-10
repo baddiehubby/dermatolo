@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { copy } from "@/data/copy";
+import { useLanguage } from "@/lib/language";
 import {
   buildWhatsAppFallbackUrl,
   buildWhatsAppUrl,
@@ -19,6 +21,7 @@ export function WhatsAppButton({
   className,
   onClick,
 }: Props) {
+  const { tx } = useLanguage();
   const [showFallback, setShowFallback] = useState(false);
   const url = buildWhatsAppUrl(message);
   const fallback = buildWhatsAppFallbackUrl(message);
@@ -38,17 +41,17 @@ export function WhatsAppButton({
         {children}
       </a>
       {showFallback ? (
-        <p className="text-xs leading-5 text-stone-500">
-          WhatsApp should open with your order request. If it did not,{" "}
+        <p className="text-xs leading-5 text-[#f3eee4]/55">
+          {tx(copy.product.fallbackLead)}{" "}
           <a
             href={fallback}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold text-green-700 underline"
+            className="font-semibold text-[#25D366] underline"
           >
-            tap this backup link
+            {tx(copy.product.fallbackLink)}
           </a>
-          . The message is sent only after you press send in WhatsApp.
+          {tx(copy.product.fallbackTail)}
         </p>
       ) : null}
     </div>

@@ -4,8 +4,8 @@
   --background: #070708;
   --foreground: #f3eee4;
   --gold: #c9a227;
-  --cream: #f3eee4;
-  --panel: #111113;
+  --cream: #070708;
+  --panel: #ffffff;
 }
 
 @theme inline {
@@ -25,8 +25,10 @@ html {
   scroll-behavior: smooth;
 }
 
-html[dir="rtl"] {
-  font-family: var(--font-urdu), "Noto Naskh Arabic", serif;
+html[dir="rtl"] body,
+html[dir="rtl"] body :where(h1, h2, h3, h4, p, a, button, span, li, label, input, textarea) {
+  font-family: var(--font-urdu), var(--font-outfit), sans-serif;
+  line-height: 2.05;
 }
 
 body {

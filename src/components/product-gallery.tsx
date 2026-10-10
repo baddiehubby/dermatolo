@@ -38,7 +38,7 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
               type="button"
               onClick={() => setActive(index)}
               className={`relative aspect-square overflow-hidden rounded-2xl border ${
-                index === active ? "border-[#c9a227]" : "border-white/10"
+                index === active ? "border-[#c9a227]" : "border-[#f3eee4]/10"
               }`}
               aria-label={`Show image ${index + 1}`}
             >

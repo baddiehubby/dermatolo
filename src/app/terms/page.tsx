@@ -15,14 +15,12 @@ export default function TermsPage() {
       <p className="mt-4 text-sm leading-7 text-[#f3eee4]/65">
         <span className="ltr-only">
           An order is placed only after you send the WhatsApp message and the business confirms it.
-          Prices shown are the current listed amounts. Delivery time depends on rider availability.
-          Eagle Delay Spray is for adult men aged 18 and over. Follow the manufacturer’s label. This
-          website is not medical advice.
+          Prices shown are the current listed amounts. Confirm delivery charges on WhatsApp. Follow
+          each product label. This website is not medical advice.
         </span>
         <span className="rtl-only">
           آرڈر تب ہوتا ہے جب آپ واٹس ایپ پیغام بھیجیں اور کاروبار کنفرم کرے۔ دکھائی گئی قیمت موجودہ فہرست
-          کے مطابق ہے۔ ڈیلیوری رائیڈر کی دستیابی پر منحصر ہے۔ ایگل ڈیلے اسپرے صرف ۱۸ سال سے زیادہ عمر کے
-          بالغ مردوں کے لیے ہے۔ لیبل کی ہدایت پر عمل کریں۔ یہ ویب سائٹ طبی مشورہ نہیں ہے۔
+          کے مطابق ہے۔ ڈیلیوری چارجز واٹس ایپ پر کنفرم کریں۔ لیبل کی ہدایت پر عمل کریں۔ یہ ویب سائٹ طبی مشورہ نہیں ہے۔
         </span>
       </p>
     </div>

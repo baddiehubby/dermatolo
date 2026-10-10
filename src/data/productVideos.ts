@@ -6,8 +6,8 @@ import { extractTikTokId } from "@/lib/tiktok";
  *
  * Example:
  * {
- *   id: "minoxidil-1",
- *   productSlug: "your-product-slug",
+ *   id: "eagle-demo-1",
+ *   productSlug: "eagle-delay-spray",
  *   tiktokUrl: "https://www.tiktok.com/@account/video/1234567890",
  *   creatorName: "Account name if verified",
  *   description: { en: "Short factual caption", ur: "مختصر تفصیل" },
@@ -18,7 +18,9 @@ import { extractTikTokId } from "@/lib/tiktok";
  *   kind: "demonstration",
  * }
  *
- * Do not paste a profile URL. Use /video/{id} links only.
+ * Do not paste a TikTok profile URL. Copy the link from a single video:
+ * TikTok → Share → Copy link. The URL must contain /video/{id}.
+ * Set productSlug to a slug from src/data/products.ts, for example eagle-delay-spray.
  */
 export const productVideos: ProductVideo[] = [];
 

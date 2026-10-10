@@ -3,7 +3,7 @@ import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About KAPTAAN 804 and Eagle Delay Spray in Karachi.",
+  description: "About KAPTAAN 804, a Karachi WhatsApp store for Eagle Delay Spray.",
   alternates: { canonical: "/about" },
 };
 
@@ -16,13 +16,11 @@ export default function AboutPage() {
       </h1>
       <p className="mt-4 text-sm leading-7 text-[#f3eee4]/65">
         <span className="ltr-only">
-          KAPTAAN 804 is a WhatsApp-first store in Karachi. The current catalog includes Eagle Delay
-          Spray at Rs. 1,300. More products can be added when their names, prices, and copy are
-          verified. This site does not take online payment.
+          KAPTAAN 804 is a Karachi storefront for Eagle Delay Spray. New products are added only
+          when their details are verified. This site does not take online payment.
         </span>
         <span className="rtl-only">
-          کپتان ۸۰۴ کراچی کا واٹس ایپ اسٹور ہے۔ موجودہ کیٹلاگ میں ایگل ڈیلے اسپرے Rs. 1,300 پر شامل ہے۔
-          مزید مصنوعات تصدیق کے بعد شامل کی جا سکتی ہیں۔ اس سائٹ پر آن لائن ادائیگی نہیں لی جاتی۔
+          کپتان ۸۰۴ کراچی میں ایگل ڈیلے اسپرے کا اسٹور ہے۔ نئی مصنوعات تب شامل ہوتی ہیں جب ان کی تفصیل تصدیق شدہ ہو۔ اس سائٹ پر آن لائن ادائیگی نہیں۔
         </span>
       </p>
       <p className="mt-4 text-sm text-[#f3eee4]/45">{site.city}</p>

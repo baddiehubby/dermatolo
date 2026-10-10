@@ -3,20 +3,21 @@ import type { Locale } from "@/lib/types";
 export const copy = {
   nav: {
     home: { en: "Home", ur: "ہوم" },
-    shop: { en: "Shop", ur: "مصنوعات" },
-    videos: { en: "Videos", ur: "ویڈیوز" },
+    shop: { en: "Shop all", ur: "تمام مصنوعات" },
+    categories: { en: "Categories", ur: "اقسام" },
+    videos: { en: "Video reviews", ur: "ویڈیو ریویوز" },
     faq: { en: "FAQ", ur: "سوالات" },
-    contact: { en: "Contact", ur: "رابطہ" },
-    about: { en: "About", ur: "تعارف" },
+    contact: { en: "Contact", ur: "رابطہ کریں" },
+    about: { en: "About us", ur: "ہمارے بارے میں" },
   },
   actions: {
     shop: { en: "Shop Products", ur: "مصنوعات دیکھیں" },
     watch: { en: "Watch Product Videos", ur: "پروڈکٹ ویڈیوز دیکھیں" },
     whatsapp: { en: "Order on WhatsApp", ur: "واٹس ایپ پر آرڈر کریں" },
     addCart: { en: "Add to cart", ur: "کارٹ میں شامل کریں" },
-    viewProduct: { en: "View Product", ur: "پروڈکٹ دیکھیں" },
+    viewProduct: { en: "View product", ur: "تفصیل دیکھیں" },
     watchVideo: { en: "Watch video", ur: "ویڈیو دیکھیں" },
-    search: { en: "Search products", ur: "تلاش" },
+    search: { en: "Search products", ur: "مصنوعات تلاش کریں" },
     cart: { en: "Open cart", ur: "کارٹ کھولیں" },
     menu: { en: "Open menu", ur: "مینو" },
     checkout: { en: "Checkout on WhatsApp", ur: "واٹس ایپ پر چیک آؤٹ" },
@@ -30,29 +31,40 @@ export const copy = {
     next: { en: "Next video", ur: "اگلی ویڈیو" },
   },
   hero: {
-    kicker: { en: "KAPTAAN 804 · Karachi", ur: "کپتان ۸۰۴ · کراچی" },
-    wordmark: { en: "KAPTAAN 804", ur: "کپتان ۸۰۴" },
-    headline: { en: "Shop with more time. Watch the products first.", ur: "پہلے دیکھیں۔ پھر اعتماد سے آرڈر کریں۔" },
+    kicker: { en: "Karachi · WhatsApp orders", ur: "کراچی · واٹس ایپ آرڈر" },
+    wordmark: { en: "KAPTAAN 804 🏏", ur: "کپتان ۸۰۴ 🏏" },
+    headline: {
+      en: "REAL SUPPORT. REAL ACTION.",
+      ur: "اصل سپورٹ۔ اصل عمل۔",
+    },
     support: {
-      en: "A discreet WhatsApp store for Eagle Delay Spray and other personal-care products. Browse, watch, then send your order.",
-      ur: "ایگل ڈیلے اسپرے اور ذاتی دیکھ بھال کی مصنوعات کا ڈسکریٹ واٹس ایپ اسٹور۔ دیکھیں، منتخب کریں، پھر آرڈر بھیجیں۔",
+      en: "Kaptaan ko support karte ho? Phir apni support dikhao! 🏏🔥\n\nExplore the collection, choose your favourite product, and order today.",
+      ur: "کپتان کو سپورٹ کرتے ہو؟ پھر اپنی سپورٹ دکھاؤ! 🏏🔥\n\nکلیکشن دیکھیں، اپنی پسند کا پروڈکٹ منتخب کریں اور آج ہی آرڈر کریں۔",
+    },
+    cta: {
+      en: "SHOW YOUR SUPPORT — SHOP NOW",
+      ur: "اپنی سپورٹ دکھائیں — ابھی خریدیں",
+    },
+    explore: {
+      en: "EXPLORE THE COLLECTION",
+      ur: "کلیکشن دیکھیں",
     },
     cricketTitle: {
-      en: "Support Kaptaan. Support Your Passion. 🏏",
-      ur: "کپتان کو سپورٹ کرتے ہیں؟ 🏏",
+      en: "KAPTAAN 804 🏏",
+      ur: "کپتان ۸۰۴ 🏏",
     },
     cricketSupport: {
-      en: "If you support Kaptaan, show your support — explore our products and place your order today!",
-      ur: "اپنی پسند کے پروڈکٹس دیکھیں اور آج ہی آرڈر کریں!",
+      en: "Kaptaan ko support karte ho? Phir apni support dikhao! 🏏🔥\n\nExplore the collection, choose your favourite product, and order today.",
+      ur: "کپتان کو سپورٹ کرتے ہو؟ پھر اپنی سپورٹ دکھاؤ! 🏏🔥\n\nکلیکشن دیکھیں، اپنی پسند کا پروڈکٹ منتخب کریں اور آج ہی آرڈر کریں۔",
     },
   },
   sections: {
-    categories: { en: "Shop by category", ur: "کیٹگری سے خریدیں" },
-    featured: { en: "Featured products", ur: "منتخب مصنوعات" },
+    categories: { en: "Categories", ur: "اقسام" },
+    featured: { en: "Popular products", ur: "مقبول مصنوعات" },
     available: { en: "Now available", ur: "اب دستیاب" },
     videos: { en: "Watch it in action", ur: "عمل میں دیکھیں" },
     videosSub: {
-      en: "Real product videos, linked to the exact item you can order.",
+      en: "Real product videos, linked to the item you can order.",
       ur: "اصل پروڈکٹ ویڈیوز، اسی چیز سے منسلک جسے آپ آرڈر کر سکتے ہیں۔",
     },
     videosEmpty: {
@@ -65,12 +77,28 @@ export const copy = {
       ur: "تصدیق شدہ تجربات یہاں شائع کیے جائیں گے۔ ابھی اس کیٹلاگ میں کوئی ریویو شامل نہیں۔",
     },
     discover: { en: "How ordering works", ur: "آرڈر کیسے ہوتا ہے" },
+    orderWhatsApp: {
+      en: "Send the product name, quantity, and your city on WhatsApp.",
+      ur: "واٹس ایپ پر مصنوعات کا نام، تعداد اور شہر بھیجیں۔",
+    },
+    orderDelivery: {
+      en: "Karachi delivery is listed as free and same-day, depending on order time and rider availability. Confirm the slot on WhatsApp.",
+      ur: "کراچی میں فری اور اسی دن ڈیلیوری آرڈر کے وقت اور دستیابی کے مطابق ہے۔ سلاٹ واٹس ایپ پر کنفرم کریں۔",
+    },
+    orderPay: {
+      en: "This website does not take card payment. Cash on delivery is confirmed on WhatsApp. Packing is discreet.",
+      ur: "اس ویب سائٹ پر کارڈ ادائیگی نہیں۔ کیش آن ڈیلیوری واٹس ایپ پر کنفرم ہوتی ہے۔ پیکنگ ڈسکریٹ ہے۔",
+    },
     faq: { en: "Questions", ur: "عام سوالات" },
     ctaTitle: { en: "Send the order on WhatsApp", ur: "واٹس ایپ پر آرڈر بھیجیں" },
     ctaBody: {
-      en: "No card checkout on this site. Cash on delivery after the business confirms your order.",
-      ur: "اس سائٹ پر کارڈ ادائیگی نہیں۔ کاروبار کنفرم کرنے کے بعد کیش آن ڈیلیوری۔",
+      en: "WhatsApp opens with the product and price. The message is sent only after you press send.",
+      ur: "واٹس ایپ مصنوعات اور قیمت کے ساتھ کھلتا ہے۔ پیغام تب جاتا ہے جب آپ خود بھیجیں۔",
     },
+    trustDelivery: { en: "Karachi same-day delivery, confirm on WhatsApp", ur: "کراچی میں اسی دن ڈیلیوری، واٹس ایپ پر کنفرم" },
+    trustCod: { en: "Cash on delivery", ur: "کیش آن ڈیلیوری" },
+    trustDiscreet: { en: "Discreet packing · 18+", ur: "ڈسکریٹ پیکنگ · ۱۸+" },
+    watchSoon: { en: "Official videos will play here", ur: "آفیشل ویڈیوز یہاں چلیں گی" },
   },
   videoKind: {
     brand: { en: "Brand video", ur: "برانڈ ویڈیو" },
@@ -91,10 +119,20 @@ export const copy = {
       en: "WhatsApp opens with the product, quantity, and total. The order is sent only after you press send.",
       ur: "واٹس ایپ پروڈکٹ، مقدار اور ٹوٹل کے ساتھ کھلتا ہے۔ آرڈر تب جاتا ہے جب آپ خود بھیجیں۔",
     },
+    fallbackLead: {
+      en: "WhatsApp should open with your order request. If it did not,",
+      ur: "واٹس ایپ آپ کی آرڈر درخواست کے ساتھ کھلنا چاہیے۔ اگر نہ کھلا تو",
+    },
+    fallbackLink: { en: "tap this backup link", ur: "یہ بیک اپ لنک دبائیں" },
+    fallbackTail: {
+      en: ". The message is sent only after you press send in WhatsApp.",
+      ur: "۔ پیغام تب جاتا ہے جب آپ واٹس ایپ میں بھیجیں دبائیں۔",
+    },
     warnings: { en: "Important information", ur: "اہم معلومات" },
     use: { en: "How to use", ur: "طریقۂ استعمال" },
     ingredients: { en: "Ingredients", ur: "اجزاء" },
     hasVideo: { en: "Has video", ur: "ویڈیو موجود" },
+    bestseller: { en: "Bestseller", ur: "بیسٹ سیلر" },
   },
   cart: {
     title: { en: "Your cart", ur: "آپ کا کارٹ" },
@@ -115,8 +153,8 @@ export const copy = {
     terms: { en: "Terms", ur: "شرائط" },
     shipping: { en: "Shipping", ur: "ڈیلیوری" },
     blurb: {
-      en: "KAPTAAN 804 is a WhatsApp-first store in Karachi. This site does not take online payment.",
-      ur: "کپتان ۸۰۴ کراچی کا واٹس ایپ اسٹور ہے۔ اس سائٹ پر آن لائن ادائیگی نہیں لی جاتی۔",
+      en: "KAPTAAN 804 — Real support. Real action. A Karachi WhatsApp store. This site does not take online payment.",
+      ur: "کپتان ۸۰۴ — اصل سپورٹ۔ اصل عمل۔ کراچی کا واٹس ایپ اسٹور۔ اس سائٹ پر آن لائن ادائیگی نہیں لی جاتی۔",
     },
     medical: {
       en: "This website is not medical diagnosis or treatment. Follow the manufacturer’s label.",

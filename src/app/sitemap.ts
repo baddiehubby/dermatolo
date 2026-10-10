@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-import { categories } from "@/data/categories";
-import { products } from "@/data/products";
+import { categoriesWithProducts, products } from "@/data/products";
 import { site } from "@/data/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -16,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  const collectionRoutes = categories.map((category) => ({
+  const collectionRoutes = categoriesWithProducts().map((category) => ({
     url: `${site.url}/collections/${category.handle}`,
     lastModified: new Date(),
   }));

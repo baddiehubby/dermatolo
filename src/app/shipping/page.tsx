@@ -4,7 +4,7 @@ import { Bilingual } from "@/components/bilingual";
 
 export const metadata: Metadata = {
   title: "Shipping",
-  description: "Karachi delivery notes for KAPTAAN 804 WhatsApp orders.",
+  description: "Delivery notes for KAPTAAN 804 WhatsApp orders in Karachi.",
   alternates: { canonical: "/shipping" },
 };
 

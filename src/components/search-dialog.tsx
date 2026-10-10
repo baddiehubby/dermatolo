@@ -26,14 +26,14 @@ export function SearchDialog({
         className="mx-auto mt-16 max-w-xl overflow-hidden rounded-3xl bg-[#111113] text-[#f3eee4] shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <form action="/search" className="border-b border-white/8 p-4">
+        <form action="/search" className="border-b border-[#f3eee4]/8 p-4">
           <input
             autoFocus
             name="q"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder={tx(copy.search.placeholder)}
-            className="h-12 w-full rounded-2xl bg-white/5 px-4 text-base outline-none"
+            className="h-12 w-full rounded-2xl bg-[#111113]/5 px-4 text-base outline-none"
           />
         </form>
         <div className="max-h-[60vh] overflow-y-auto p-2">
@@ -42,7 +42,7 @@ export function SearchDialog({
               key={product.id}
               href={`/products/${product.slug}`}
               onClick={onClose}
-              className="flex items-center justify-between gap-4 rounded-2xl px-3 py-3 hover:bg-white/5"
+              className="flex items-center justify-between gap-4 rounded-2xl px-3 py-3 hover:bg-[#111113]/5"
             >
               <span className="text-sm font-medium">{tx(product.name)}</span>
               <span className="shrink-0 text-sm text-[#c9a227]">{formatPKR(product.price)}</span>

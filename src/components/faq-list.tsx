@@ -14,7 +14,7 @@ export function FaqList({
   const [open, setOpen] = useState(0);
 
   return (
-    <div className="divide-y divide-white/8 rounded-[1.6rem] border border-white/8 bg-[#111113]">
+    <div className="divide-y divide-white/8 rounded-[1.6rem] border border-[#f3eee4]/8 bg-[#111113]">
       {items.map((faq, index) => {
         const isOpen = open === index;
         return (

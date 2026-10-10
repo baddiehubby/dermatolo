@@ -2,69 +2,31 @@ import type { Localized } from "@/lib/types";
 
 export const faqs: { question: Localized; answer: Localized }[] = [
   {
-    question: {
-      en: "What is Eagle Delay Spray?",
-      ur: "Eagle Delay Spray کیا ہے؟",
-    },
+    question: { en: "How do I place an order?", ur: "آرڈر کیسے کروں؟" },
     answer: {
-      en: "Eagle Delay Spray is a premium delay spray for adult men who want more control and confidence in intimate moments. Results vary. Always follow the pack label.",
-      ur: "ایگل ڈیلے اسپرے بالغ مردوں کے لیے ایک پریمیم ڈیلے سپرے ہے، جو قربت کے لمحات میں زیادہ کنٹرول اور اعتماد چاہنے والوں کے لیے پیش کیا گیا ہے۔ نتائج ہر شخص میں مختلف ہو سکتے ہیں۔ استعمال ہمیشہ پیکنگ کے لیبل کی ہدایات کے مطابق کریں۔",
+      en: "Choose a product and quantity, then tap Order on WhatsApp. A message opens with the product name, price, and quantity. The request is sent only after you press send.",
+      ur: "مصنوعات اور تعداد منتخب کریں، پھر واٹس ایپ پر آرڈر دبائیں۔ پیغام میں نام، قیمت اور تعداد کھلتی ہے۔ درخواست تب جاتی ہے جب آپ خود بھیجیں۔",
     },
   },
   {
-    question: { en: "What is the listed price?", ur: "قیمت کیا ہے؟" },
+    question: { en: "Do I pay on this website?", ur: "کیا ادائیگی ویب سائٹ پر ہوتی ہے؟" },
     answer: {
-      en: "Eagle Delay Spray is listed at Rs. 1,300. Karachi delivery is advertised as free. Payment is cash on delivery after the order is confirmed on WhatsApp.",
-      ur: "ایگل ڈیلے اسپرے کی قیمت Rs. 1,300 ہے۔ کراچی میں ڈیلیوری فری ہے۔ ادائیگی کیش آن ڈیلیوری کے ذریعے ہوتی ہے۔",
+      en: "No. This site does not take card or online payment. Confirm payment and cash on delivery with the business on WhatsApp.",
+      ur: "نہیں۔ اس سائٹ پر کارڈ یا آن لائن ادائیگی نہیں۔ ادائیگی اور کیش آن ڈیلیوری واٹس ایپ پر کنفرم کریں۔",
     },
   },
   {
-    question: { en: "Where do you deliver?", ur: "ڈیلیوری کہاں ہوتی ہے؟" },
+    question: { en: "What about delivery charges and timing?", ur: "ڈیلیوری چارجز اور وقت؟" },
     answer: {
-      en: "We deliver across Karachi. Delivery in Karachi is advertised as free. Send your full address and area when you order.",
-      ur: "ہم کراچی بھر میں ڈیلیوری کرتے ہیں۔ کراچی میں ڈیلیوری فری ہے۔ آرڈر کرتے وقت اپنا مکمل پتہ اور علاقہ ضرور لکھیں۔",
+      en: "Karachi delivery is listed as free and same-day, depending on order time and rider availability. Confirm the slot on WhatsApp before you send the order.",
+      ur: "کراچی میں فری اور اسی دن ڈیلیوری آرڈر کے وقت اور دستیابی کے مطابق ہے۔ آرڈر بھیجنے سے پہلے واٹس ایپ پر سلاٹ کنفرم کریں۔",
     },
   },
   {
-    question: { en: "How long does delivery take?", ur: "ڈیلیوری کتنے وقت میں ہوتی ہے؟" },
+    question: { en: "How should I use a product?", ur: "استعمال کیسے کروں؟" },
     answer: {
-      en: "Karachi same-day delivery depends on order time and rider availability. WhatsApp confirmation includes the expected slot.",
-      ur: "کراچی میں اسی دن ڈیلیوری آرڈر کے وقت اور ڈیلیوری کی دستیابی کے مطابق ہوتی ہے۔ آرڈر کنفرم ہونے پر واٹس ایپ پر متوقع وقت بتا دیا جاتا ہے۔",
-    },
-  },
-  {
-    question: { en: "How do I pay?", ur: "ادائیگی کیسے ہوگی؟" },
-    answer: {
-      en: "Cash on delivery. Pay when the parcel arrives. This website does not take card or online payment.",
-      ur: "ادائیگی کیش آن ڈیلیوری ہے — آپ پارسل وصول کرتے وقت رقم ادا کرتے ہیں۔ اس ویب سائٹ پر کارڈ یا آن لائن ادائیگی نہیں لی جاتی۔",
-    },
-  },
-  {
-    question: { en: "Is packing discreet?", ur: "کیا پیکنگ ڈسکریٹ ہے؟" },
-    answer: {
-      en: "Yes. Orders go out in plain, sealed packing. The outside does not describe the product.",
-      ur: "جی ہاں۔ آپ کا آرڈر سادہ اور بند پیکنگ میں بھیجا جاتا ہے، اور باہر سے پیکج کے اندر موجود پروڈکٹ کی نوعیت ظاہر نہیں کی جاتی۔",
-    },
-  },
-  {
-    question: { en: "How do I order?", ur: "آرڈر کیسے کریں؟" },
-    answer: {
-      en: "Tap Order on WhatsApp, or add items to the cart and check out. Send your name, mobile number, full Karachi address, area, and quantity. The order is placed only after you send the WhatsApp message and the business confirms it.",
-      ur: "واٹس ایپ پر 0310 220 1180 پر پیغام بھیجیں، یا کارٹ سے چیک آؤٹ کریں۔ نام، موبائل نمبر، مکمل پتہ، علاقہ اور مقدار لکھیں۔ آرڈر تب ہوتا ہے جب آپ پیغام بھیجیں اور کاروبار کنفرم کرے۔",
-    },
-  },
-  {
-    question: { en: "How should I use it?", ur: "کیسے استعمال کروں؟" },
-    answer: {
-      en: "Follow the instructions on the pack label. If you have an allergy or medical concern, ask a qualified clinician first.",
-      ur: "پیکنگ کے لیبل پر لکھی ہدایات پر عمل کریں۔ اگر الرجی یا کوئی طبی مسئلہ ہو تو استعمال سے پہلے مستند طبی مشورہ لیں۔",
-    },
-  },
-  {
-    question: { en: "What are the ingredients?", ur: "اجزاء کیا ہیں؟" },
-    answer: {
-      en: "A verified ingredient list is not published here yet. Read the bottle label, or ask for a label photo on WhatsApp.",
-      ur: "تصدیق شدہ اجزاء کی فہرست ابھی یہاں درج نہیں۔ بوتل کا لیبل دیکھیں، یا واٹس ایپ پر لیبل کی تصویر مانگ لیں۔",
+      en: "Follow the directions printed on that product’s label. This website is not medical advice.",
+      ur: "ہر پروڈکٹ کے لیبل پر لکھی ہدایت پر عمل کریں۔ یہ ویب سائٹ طبی مشورہ نہیں ہے۔",
     },
   },
 ];

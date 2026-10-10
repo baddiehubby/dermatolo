@@ -3,7 +3,7 @@ import { VideoShowcase } from "@/components/video-showcase";
 
 export const metadata: Metadata = {
   title: "Product videos",
-  description: "Watch KAPTAAN 804 product videos and order the matching item on WhatsApp.",
+  description: "Product videos for KAPTAAN 804 appear here when official TikTok links are added.",
   alternates: { canonical: "/videos" },
 };
 

@@ -25,7 +25,18 @@ export function ProductActions({ product }: { product: Product }) {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-3xl font-bold text-[#c9a227]">{formatPKR(price)}</p>
+        <p className="text-3xl font-bold text-[#c9a227]">
+          {formatPKR(price)}
+          {variant?.compareAtPrice && variant.compareAtPrice > price ? (
+            <span className="ms-3 text-lg font-medium text-[#f3eee4]/40 line-through">
+              {formatPKR(variant.compareAtPrice)}
+            </span>
+          ) : product.compareAtPrice && product.compareAtPrice > price ? (
+            <span className="ms-3 text-lg font-medium text-[#f3eee4]/40 line-through">
+              {formatPKR(product.compareAtPrice)}
+            </span>
+          ) : null}
+        </p>
         <p className="mt-1 text-sm text-[#f3eee4]/55">
           {available ? tx(copy.product.available) : tx(copy.product.unavailable)}
         </p>
@@ -43,7 +54,7 @@ export function ProductActions({ product }: { product: Product }) {
                 className={`rounded-full border px-4 py-2 text-sm ${
                   item.id === variant?.id
                     ? "border-[#c9a227] bg-[#c9a227] text-[#070708]"
-                    : "border-white/15"
+                    : "border-[#f3eee4]/15"
                 }`}
               >
                 {tx(item.title)} · {formatPKR(item.price)}
