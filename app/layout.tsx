@@ -1,27 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Naskh_Arabic, Noto_Nastaliq_Urdu, Outfit } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
-import { product, site } from "@/lib/product";
-import { faqJsonLd, organizationJsonLd, productJsonLd } from "@/lib/schema";
+import { BRAND, pageDescription, site } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
+import { organizationJsonLd } from "@/lib/schema";
 
-const naskh = Noto_Naskh_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-naskh",
-  display: "swap",
-});
-
-const nastaliq = Noto_Nastaliq_Urdu({
-  subsets: ["arabic"],
-  weight: "400",
-  variable: "--font-nastaliq",
-  display: "swap",
-});
-
-const outfit = Outfit({
+const display = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-outfit",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const sans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -35,34 +29,37 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   ...(site.url ? { metadataBase: new URL(site.url) } : {}),
   title: {
-    default: site.title,
-    template: `%s · ${product.name}`,
+    default: `${BRAND} Perfume Pakistan | Luxury Unisex Fragrance PKR 1999`,
+    template: `%s | ${BRAND} Perfume Pakistan`,
   },
-  description: site.description,
-  keywords: [...site.keywords],
-  alternates: {
-    canonical: "/",
-  },
+  description: pageDescription(
+    "Luxury unisex perfume Pakistan — long lasting fragrance under 2000.",
+  ),
+  alternates: site.url ? { canonical: "/" } : undefined,
   openGraph: {
     type: "website",
     locale: site.locale,
-    siteName: product.name,
-    ...(site.url
-      ? {
-          images: [
-            {
-              url: product.images.og,
-              width: 1280,
-              height: 720,
-              alt: `${product.name} — ${product.cityEn}`,
-            },
-          ],
-        }
-      : {}),
+    siteName: BRAND,
+    title: `${BRAND} — ${site.tagline}`,
+    description: pageDescription(
+      "Luxury unisex perfume Pakistan — long lasting fragrance under 2000.",
+    ),
+    images: [
+      {
+        url: site.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${BRAND} perfume — luxury unisex fragrance Pakistan`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    ...(site.url ? { images: [product.images.og] } : {}),
+    title: `${BRAND} — ${site.tagline}`,
+    description: pageDescription(
+      "Luxury unisex perfume Pakistan — long lasting fragrance under 2000.",
+    ),
+    images: [site.ogImage],
   },
   robots: {
     index: true,
@@ -70,28 +67,15 @@ export const metadata: Metadata = {
   },
 };
 
-function JsonLd({ data }: { data: unknown }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
-      }}
-    />
-  );
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ur" dir="rtl" className={`${naskh.variable} ${nastaliq.variable} ${outfit.variable}`}>
-      <body className="min-h-screen overflow-x-clip bg-ink font-naskh text-ivory antialiased">
+    <html lang="en" dir="ltr" className={`${display.variable} ${sans.variable}`}>
+      <body className="min-h-screen overflow-x-clip bg-ink font-sans text-ivory antialiased">
         <JsonLd data={organizationJsonLd()} />
-        <JsonLd data={productJsonLd()} />
-        <JsonLd data={faqJsonLd()} />
         {children}
       </body>
     </html>

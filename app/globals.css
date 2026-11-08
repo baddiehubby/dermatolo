@@ -4,13 +4,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 7.5rem;
-}
-
-@media (min-width: 768px) {
-  html {
-    scroll-padding-top: 5.25rem;
-  }
+  scroll-padding-top: 6rem;
 }
 
 @media (max-width: 767px) {
@@ -21,7 +15,10 @@ html {
 
 body {
   background-color: #070708;
-  background-image: radial-gradient(880px 420px at 78% -12%, rgba(201, 162, 39, 0.08), transparent 62%);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201, 162, 39, 0.07), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201, 162, 39, 0.03), transparent 50%);
+  background-attachment: fixed;
   color: #f3eee4;
   text-rendering: optimizeLegibility;
 }
@@ -32,61 +29,26 @@ body {
 }
 
 @layer components {
-  .font-nastaliq {
-    font-family: var(--font-nastaliq), "Noto Nastaliq Urdu", serif;
-    line-height: 2.2;
-    padding-bottom: 0.12em;
-  }
-
   .wa-btn {
-    @apply inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full bg-[#25d366] px-7 py-3.5 text-base font-semibold font-naskh text-white shadow-[0_14px_32px_rgba(37,211,102,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25d366] touch-manipulation;
+    @apply inline-flex min-h-14 items-center justify-center gap-2.5 rounded-sm bg-[#25d366] px-7 py-3.5 text-base font-semibold text-white shadow-[0_14px_32px_rgba(37,211,102,0.18)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25d366] touch-manipulation;
   }
 
   .ghost-btn {
-    @apply inline-flex min-h-14 items-center justify-center rounded-full border border-gold/40 px-6 py-3.5 text-base font-medium font-naskh text-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold touch-manipulation;
+    @apply inline-flex min-h-14 items-center justify-center rounded-sm border border-gold/40 px-6 py-3.5 text-base font-medium text-gold-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold touch-manipulation;
   }
 
-  .product-frame {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1.75rem;
-    background: #0c0c0e;
-    box-shadow:
-      inset 0 0 0 1px rgba(201, 162, 39, 0.32),
-      0 30px 70px rgba(0, 0, 0, 0.48);
+  .luxury-plate {
+    background-color: #0a0a0c;
+    background-image:
+      linear-gradient(135deg, rgba(201, 162, 39, 0.04) 0%, transparent 45%, rgba(201, 162, 39, 0.03) 100%),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.012) 3px,
+        rgba(255, 255, 255, 0.012) 4px
+      );
   }
-
-  .product-frame.frame-plain {
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .product-card {
-    background: #100f0c;
-    border: 1px solid rgba(201, 162, 39, 0.28);
-    box-shadow:
-      inset 0 1px 0 rgba(232, 212, 139, 0.16),
-      0 28px 64px rgba(0, 0, 0, 0.42);
-  }
-
-  .surface-card {
-    background: #12110f;
-    border: 1px solid rgba(201, 162, 39, 0.18);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-  }
-}
-
-.hero-glow {
-  background: radial-gradient(circle, rgba(201, 162, 39, 0.16), transparent 68%);
-  filter: blur(6px);
-}
-
-input,
-textarea,
-select {
-  font-family: inherit;
-  font-size: 16px;
-  color-scheme: dark;
 }
 
 .no-scrollbar {
@@ -97,49 +59,10 @@ select {
   display: none;
 }
 
-.faq-plus {
-  transition: transform 0.2s ease;
-}
-
-details[open] .faq-plus {
-  transform: rotate(45deg);
-}
-
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -10px, 0);
-  }
-}
-
-@keyframes gold-sweep {
-  0%,
-  20% {
-    transform: translateX(-140%);
-  }
-  55%,
-  100% {
-    transform: translateX(140%);
-  }
-}
-
-@keyframes glow-pulse {
-  0%,
-  100% {
-    opacity: 0.45;
-  }
-  50% {
-    opacity: 0.85;
-  }
-}
-
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -147,44 +70,9 @@ details[open] .faq-plus {
   }
 }
 
-.bottle-float {
-  animation: float-y 7.5s ease-in-out infinite;
-}
-
-.hero-glow {
-  animation: glow-pulse 9s ease-in-out infinite;
-}
-
-.gold-sweep::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 42%,
-    rgba(243, 230, 196, 0.18) 50%,
-    transparent 58%
-  );
-  transform: translateX(-140%);
-  animation: gold-sweep 8.5s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
-    animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation-name: rise;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-duration: 1ms;
-      animation-timeline: view();
-      animation-range: entry 0% entry 34%;
-    }
+    animation: rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .wa-btn,
@@ -199,7 +87,6 @@ details[open] .faq-plus {
   .wa-btn:hover {
     transform: translateY(-2px);
     background-color: #1ebe5d;
-    box-shadow: 0 16px 34px rgba(37, 211, 102, 0.3);
   }
 
   .ghost-btn:hover {
@@ -214,16 +101,8 @@ details[open] .faq-plus {
     scroll-behavior: auto;
   }
 
-  .bottle-float,
-  .hero-glow,
   .reveal {
     animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
-  .gold-sweep::after {
-    content: none;
   }
 
   .wa-btn:hover,

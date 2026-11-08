@@ -1,84 +1,20 @@
-import type { FeatureIcon } from "@/lib/content";
-
 export function BrandMark({ className = "h-10 w-10" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <circle cx="32" cy="32" r="30.25" stroke="currentColor" strokeWidth="0.75" />
-      <path
+      <rect x="1" y="1" width="62" height="62" rx="8" stroke="currentColor" strokeWidth="1.25" />
+      <text
+        x="32"
+        y="40"
+        textAnchor="middle"
         fill="currentColor"
-        d="M32 9.2 33.4 13.6c2.6.2 5.4 1.3 7.2 3.1 3.1-2.6 7.3-3.3 11.1-1.4-1.9 2.6-2.6 5.2-1.9 7.8 2.8.5 5.4 1.9 7.3 3.8-3.8.9-6.6.7-8.7-.3.2 2.1 1.1 4 2.4 5.4-2.8-.2-5.2-1.2-6.8-2.8L41.2 40.6c-.7 2.4-1.9 4.2-3.5 5.6h-1.4c-.2-1.2-.7-2.6-1.6-4l-2.1-8.4-1.9 8.4c-.9 1.4-1.4 2.8-1.6 4h-1.4c-1.6-1.4-2.8-3.2-3.5-5.6l-2.8-10.1c-1.6 1.6-4 2.6-6.8 2.8 1.3-1.4 2.2-3.3 2.4-5.4-2.1 1-4.9 1.2-8.7.3 1.9-1.9 4.5-3.3 7.3-3.8.7-2.6 0-5.2-1.9-7.8 3.8-1.9 8-1.2 11.1 1.4 1.8-1.8 4.6-2.9 7.2-3.1L32 9.2Z"
-      />
-      <path
-        fill="#070708"
-        d="M32 18.2c.9 0 1.5.7 1.4 1.4-.1.6-.7 1-1.4 1s-1.3-.4-1.4-1c-.1-.7.5-1.4 1.4-1.4Z"
-      />
+        fontFamily="Georgia, 'Times New Roman', serif"
+        fontSize="22"
+        letterSpacing="1"
+      >
+        M
+      </text>
     </svg>
   );
-}
-
-export function FeatureIconMark({ name }: { name: FeatureIcon }) {
-  const common = {
-    className: "h-5 w-5",
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.4,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    "aria-hidden": true,
-  };
-
-  switch (name) {
-    case "chat":
-      return (
-        <svg {...common}>
-          <path d="M5 16.5 3.8 20.2 7.6 19A8.5 8.5 0 1 0 5 16.5Z" />
-        </svg>
-      );
-    case "pin":
-      return (
-        <svg {...common}>
-          <path d="M12 21s6-5.1 6-10a6 6 0 1 0-12 0c0 4.9 6 10 6 10Z" />
-          <circle cx="12" cy="11" r="1.6" />
-        </svg>
-      );
-    case "list":
-      return (
-        <svg {...common}>
-          <path d="M9 7h10M9 12h10M9 17h10" />
-          <path d="M5 7h.01M5 12h.01M5 17h.01" />
-        </svg>
-      );
-    case "lock":
-      return (
-        <svg {...common}>
-          <rect x="5" y="10" width="14" height="10" rx="2" />
-          <path d="M8 10V8a4 4 0 0 1 8 0v2" />
-        </svg>
-      );
-    case "user":
-      return (
-        <svg {...common}>
-          <circle cx="12" cy="8" r="3" />
-          <path d="M5.5 19c1.2-2.6 3.4-4 6.5-4s5.3 1.4 6.5 4" />
-        </svg>
-      );
-    case "label":
-      return (
-        <svg {...common}>
-          <path d="M4 12V5h7l8 8-7 7-8-8Z" />
-          <circle cx="8.5" cy="8.5" r="1" />
-        </svg>
-      );
-    case "cash":
-      return (
-        <svg {...common}>
-          <rect x="3" y="6.5" width="18" height="11" rx="2" />
-          <circle cx="12" cy="12" r="2.4" />
-          <path d="M6.5 9.5v.01M17.5 14.5v.01" />
-        </svg>
-      );
-  }
 }
 
 export function WhatsAppIcon({ className = "h-5 w-5" }: { className?: string }) {

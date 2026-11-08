@@ -1,57 +1,65 @@
-import { faqs } from "./content";
-import { contact, hasConfirmedPrice, product, site } from "./product";
+import {
+  BRAND,
+  CURRENCY,
+  faqs,
+  formatPrice,
+  PRICE,
+  PRODUCT_NAME,
+  site,
+  WHATSAPP_NUMBER,
+} from "./site";
 
-export function productJsonLd() {
+function absUrl(path: string): string {
+  if (!site.url) return path;
+  return `${site.url}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+export function organizationJsonLd() {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: BRAND,
+    description: `${PRODUCT_NAME} — ${site.tagline}`,
+    telephone: WHATSAPP_NUMBER.includes("X") ? undefined : `+${WHATSAPP_NUMBER}`,
+    areaServed: {
+      "@type": "Country",
+      name: "Pakistan",
+    },
+  };
+  if (site.url) data.url = site.url;
+  if (!data.telephone) delete data.telephone;
+  return data;
+}
+
+export function productJsonLd(pagePath: "/shop" | "/11-11" = "/shop") {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: product.name,
-    alternateName: product.nameUrdu,
+    name: PRODUCT_NAME,
     brand: {
       "@type": "Brand",
-      name: product.brand,
+      name: BRAND,
     },
-    description: site.description,
-    category: "Personal Care",
-    audience: {
-      "@type": "PeopleAudience",
-      suggestedMinAge: 18,
-    },
-    areaServed: {
-      "@type": "City",
-      name: "Karachi",
-      containedInPlace: {
+    description: `${PRODUCT_NAME}. ${site.tagline} Luxury unisex perfume for Pakistan. Preorder price ${formatPrice()}. ${site.delivery}.`,
+    category: "Perfume",
+    image: [absUrl(site.ogImage)],
+    offers: {
+      "@type": "Offer",
+      price: PRICE,
+      priceCurrency: CURRENCY,
+      availability: "https://schema.org/PreOrder",
+      url: site.url ? absUrl(pagePath) : pagePath,
+      seller: {
+        "@type": "Organization",
+        name: BRAND,
+      },
+      areaServed: {
         "@type": "Country",
         name: "Pakistan",
       },
     },
   };
-
-  if (site.url) {
-    data.url = site.url;
-    data.image = [`${site.url}${product.images.og}`];
-  }
-
-  if (hasConfirmedPrice(product.pricePkr)) {
-    const offer: Record<string, unknown> = {
-      "@type": "Offer",
-      price: product.pricePkr,
-      priceCurrency: product.currency,
-      availability: "https://schema.org/InStock",
-      acceptedPaymentMethod: "http://purl.org/goodrelations/v1#COD",
-      seller: {
-        "@type": "Organization",
-        name: product.name,
-      },
-      areaServed: {
-        "@type": "City",
-        name: "Karachi",
-      },
-    };
-    if (site.url) offer.url = site.url;
-    data.offers = offer;
-  }
-
+  if (site.url) data.url = absUrl(pagePath);
   return data;
 }
 
@@ -70,19 +78,15 @@ export function faqJsonLd() {
   };
 }
 
-export function organizationJsonLd() {
-  const data: Record<string, unknown> = {
+export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
+  return {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: product.name,
-    telephone: `+${contact.whatsappE164}`,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Karachi",
-      addressRegion: "Sindh",
-      addressCountry: "PK",
-    },
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: site.url ? absUrl(item.path) : item.path,
+    })),
   };
-  if (site.url) data.url = site.url;
-  return data;
 }

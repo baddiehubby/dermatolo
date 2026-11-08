@@ -1,66 +1,18 @@
-import { contact, formatPkr, orderTotalPkr, product } from "./product";
+import { waLink, WHATSAPP_MESSAGE } from "./site";
 
 export function buildWhatsAppUrl(message: string): string {
-  return `https://wa.me/${contact.whatsappE164}?text=${encodeURIComponent(message)}`;
+  return waLink(message);
 }
 
-export const defaultOrderDraft = `السلام علیکم، مجھے ${product.name} آرڈر کرنا ہے۔
-
-نام:
-موبائل:
-مکمل پتہ:
-کراچی کا علاقہ:
-مقدار:
-
-براہِ کرم میرا آرڈر کنفرم کر دیں۔`;
-
-export const enquirePriceMessage = `السلام علیکم، مجھے ${product.name} کی موجودہ قیمت اور کراچی ڈیلیوری کی معلومات درکار ہیں۔`;
-
-export const infoMessage = `السلام علیکم، مجھے ${product.name} کے بارے میں معلومات درکار ہیں۔`;
-
-export function orderUrl(message: string = defaultOrderDraft): string {
-  return buildWhatsAppUrl(message);
+export function orderUrl(message: string = WHATSAPP_MESSAGE): string {
+  return waLink(message);
 }
 
-export function priceEnquireUrl(): string {
-  return buildWhatsAppUrl(enquirePriceMessage);
+/** Kept for admin/reviews UI if enabled; storefront does not show reviews. */
+export function reviewHref(): string {
+  return waLink(`Hi, I want to share feedback about ${WHATSAPP_MESSAGE.includes("MONEY") ? "MONEY perfume" : "my order"}.`);
 }
 
-export function infoUrl(): string {
-  return buildWhatsAppUrl(infoMessage);
-}
-
-export type OrderDetails = {
-  name: string;
-  phone: string;
-  address: string;
-  area: string;
-  quantity: number;
-};
-
-export function buildFilledOrderMessage(details: OrderDetails): string {
-  const total = orderTotalPkr(details.quantity);
-  const totalLine =
-    total === null
-      ? `ادائیگی: ${product.paymentUrdu}`
-      : `کل رقم: ${formatPkr(total)} (${product.paymentUrdu})`;
-  return `السلام علیکم، مجھے ${product.name} آرڈر کرنا ہے۔
-
-نام: ${details.name}
-موبائل: ${details.phone}
-مکمل پتہ: ${details.address}
-کراچی کا علاقہ: ${details.area}
-مقدار: ${details.quantity}
-${totalLine}
-
-براہِ کرم میرا آرڈر کنفرم کر دیں۔`;
-}
-
-export function filledOrderUrl(details: OrderDetails): string {
-  return buildWhatsAppUrl(buildFilledOrderMessage(details));
-}
-
-/** Call from a click or submit handler. Keeps the page open and avoids window.open. */
 export function openWhatsApp(url: string) {
   const anchor = document.createElement("a");
   anchor.href = url;

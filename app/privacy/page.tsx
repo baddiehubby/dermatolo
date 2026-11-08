@@ -1,38 +1,40 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
 import { StickyCta } from "@/components/StickyCta";
-import { contact, product } from "@/lib/product";
+import { BRAND, pageTitle, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "رازداری",
-  description: `${product.name} کی رازداری کی معلومات۔ آرڈر واٹس ایپ پر، ادائیگی ${product.paymentUrdu}${product.discreetPackaging ? `، اور ${product.discreetUrdu}` : ""}۔`,
-  alternates: { canonical: "/privacy" },
+  title: { absolute: pageTitle("Privacy") },
+  description: `How ${BRAND} handles WhatsApp orders and site data. No card checkout on this site.`,
+  alternates: site.url ? { canonical: "/privacy" } : undefined,
+  robots: { index: true, follow: true },
 };
 
 export default function PrivacyPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto max-w-3xl px-4 py-16 pb-28 leading-9 text-mist">
-        <h1 className="font-nastaliq text-4xl text-white">رازداری</h1>
+      <main className="mx-auto max-w-3xl px-4 py-14 pb-28 text-mist leading-relaxed">
+        <h1 className="font-display text-4xl text-ivory">Privacy</h1>
         <p className="mt-6">
-          تمام آرڈرز واٹس ایپ (<bdi dir="ltr">{contact.phoneDisplay}</bdi>) کے ذریعے ہوتے ہیں۔ اس صفحے کا آرڈر فارم ادائیگی کی معلومات نہیں لیتا، اور بھیجی گئی تفصیل اس ویب سائٹ کے سرور پر محفوظ نہیں ہوتی۔ بٹن دبانے پر واٹس ایپ کھلتا ہے۔
+          Orders are placed on WhatsApp via{" "}
+          <a href={waLink()} className="text-gold-light hover:underline">
+            {site.ctaLabel}
+          </a>
+          . This website does not take card payments or store checkout forms on a server.
         </p>
         <p className="mt-4">
-          ادائیگی {product.paymentUrdu} ہے، یعنی رقم پارسل وصول کرتے وقت ادا کی جاتی ہے۔ یہ سائٹ کارڈ نمبر، پاس ورڈ، یا آن لائن چیک آؤٹ کے لیے استعمال نہیں ہوتی۔
+          Name, phone, and address you send on WhatsApp are used only to confirm and deliver your
+          order. WhatsApp messages are subject to WhatsApp’s own policies.
         </p>
-        {product.discreetPackaging ? (
-          <p className="mt-4">
-            آرڈر سادہ اور بند ڈسکریٹ پیکنگ میں بھیجا جاتا ہے۔ باہر سے پیکج کے اندر موجود پروڈکٹ کی نوعیت ظاہر نہیں کی جاتی۔
-          </p>
-        ) : null}
         <p className="mt-4">
-          آپ کا نام، نمبر اور پتہ صرف آرڈر کی کنفرمیشن اور ڈیلیوری کے لیے استعمال ہوتے ہیں۔ واٹس ایپ پر بھیجا گیا پیغام واٹس ایپ کی اپنی پالیسی کے تحت رہتا ہے۔
+          If review tools are enabled, submitted review text may be stored and shown publicly. Contact
+          us on WhatsApp to request removal.
         </p>
         <Link href="/" className="mt-8 inline-block text-gold-light hover:underline">
-          واپس ہوم
+          Back to home
         </Link>
       </main>
       <Footer />

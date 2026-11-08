@@ -23,16 +23,10 @@ const config: Config = {
         },
         mist: "#cfc8b8",
         ivory: "#f3eee4",
-        bronze: "#8d6a3f",
       },
       fontFamily: {
-        naskh: ["var(--font-naskh)", "Noto Naskh Arabic", "serif"],
-        nastaliq: ["var(--font-nastaliq)", "Noto Nastaliq Urdu", "serif"],
-        latin: ["var(--font-outfit)", "Outfit", "sans-serif"],
-      },
-      boxShadow: {
-        gold: "0 18px 50px rgba(201, 162, 39, 0.18)",
-        card: "0 16px 40px rgba(0, 0, 0, 0.35)",
+        display: ["var(--font-display)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
     },
   },
