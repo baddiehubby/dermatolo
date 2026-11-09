@@ -5,7 +5,8 @@ import type { NextConfig } from "next";
  * Prefer Vercel → Domains to attach both www and apex, with a primary redirect
  * (e.g. kaptaan804.com → https://www.kaptaan804.com). Set
  * NEXT_PUBLIC_SITE_URL=https://www.kaptaan804.com so canonicals/sitemap match.
- * Host-based redirects here are optional and only apply when that env is set to a www origin.
+ * On Vercel production, lib/site.ts also falls back to that www origin if the env is missing.
+ * Host-based redirects here apply when the configured/fallback origin is a www host.
  */
 
 type HostRedirect = {
@@ -16,7 +17,9 @@ type HostRedirect = {
 };
 
 function wwwApexRedirects(): HostRedirect[] {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    (process.env.VERCEL_ENV === "production" ? "https://www.kaptaan804.com" : "");
   if (!raw) return [];
   try {
     const { hostname, origin } = new URL(raw);

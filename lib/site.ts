@@ -44,8 +44,13 @@ export function formatPrice(value: number = PRICE): string {
   return `PKR ${value.toLocaleString("en-PK")}`;
 }
 
+/** Brand production origin — used when NEXT_PUBLIC_SITE_URL is unset on Vercel production. */
+export const DEFAULT_SITE_URL = "https://www.kaptaan804.com";
+
 function configuredSiteUrl(): string | null {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+    (process.env.VERCEL_ENV === "production" ? DEFAULT_SITE_URL : null);
   if (!raw) return null;
   try {
     const url = new URL(raw);

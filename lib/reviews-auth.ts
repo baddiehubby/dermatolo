@@ -1,7 +1,7 @@
 import "server-only";
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
-export const ADMIN_COOKIE = "eagle_admin";
+export const ADMIN_COOKIE = "money_admin";
 export const ADMIN_SESSION_SECONDS = 8 * 60 * 60;
 
 /** The owner's password. Unset = the admin is disabled. Never sent to the browser. */
@@ -18,7 +18,7 @@ export function safeEqual(a: string, b: string): boolean {
 }
 
 function sign(secret: string, expires: number): string {
-  return createHmac("sha256", secret).update(`eagle-admin:${expires}`).digest("hex");
+  return createHmac("sha256", secret).update(`money-admin:${expires}`).digest("hex");
 }
 
 /** Session cookie value: "<expiry>.<hmac>". It never contains the secret itself. */
@@ -38,7 +38,7 @@ export function isValidSession(token: string | undefined | null): boolean {
 
 /** Salted SHA-256 so raw IP addresses are never stored or logged. */
 export function hashVisitor(value: string): string {
-  const salt = process.env.REVIEWS_HASH_SALT || process.env.ADMIN_SECRET || "eagle-reviews";
+  const salt = process.env.REVIEWS_HASH_SALT || process.env.ADMIN_SECRET || "money-reviews";
   return createHash("sha256").update(`${salt}|${value}`).digest("hex").slice(0, 32);
 }
 

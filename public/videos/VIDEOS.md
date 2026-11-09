@@ -8,8 +8,8 @@ Wired in `lib/site.ts` → `site.videos.intro` / `hero` / `product` / `atmospher
 |------|--------|--------|--------|
 | Intro (primary, voice-on) | `/public/videos/money-intro.mp4` | `/public/videos/posters/money-intro.jpg` | `C:\Users\Dell\Desktop\yt\YTShort_02Nov2026_11_29_34.mp4` |
 | Home hero | same as intro | same as intro | Desktop `yt` folder |
-| Shop product | `/public/videos/money-product.mp4` | `/public/videos/posters/money-product.jpg` | Eagle Delay Spray short (muted loop) |
-| Gallery / atmosphere | `/public/videos/money-atmosphere.mp4` | `/public/videos/posters/money-atmosphere.jpg` | Eagle Delay Spray short (muted loop) |
+| Shop product | `/public/videos/money-product.mp4` | `/public/videos/posters/money-product.jpg` | Preserved muted loop (do not replace without owner OK) |
+| Gallery / atmosphere | `/public/videos/money-atmosphere.mp4` | `/public/videos/posters/money-atmosphere.jpg` | Preserved muted loop (do not replace without owner OK) |
 
 ## Audio / autoplay policy
 
@@ -22,10 +22,10 @@ Browsers **block unmuted autoplay**. The intro uses `BrandVideo` with `withAudio
 
 Atmosphere / product clips stay **muted looping** by default.
 
-## Leftover (not referenced)
+## Leftover (not referenced by storefront)
 
-- `eagle-demo.mp4` / `eagle-demo.webm` — older demo copies.
-- `money-hero.mp4` — previous hero short; replaced by intro for the homepage.
+- `eagle-demo.mp4` / `eagle-demo.webm` — older unused demo copies (safe to ignore).
+- `money-hero.mp4` — previous hero short; homepage uses intro instead.
 
 ## How to swap for real MONEY files
 
