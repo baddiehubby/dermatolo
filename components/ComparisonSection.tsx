@@ -1,48 +1,60 @@
 import Link from "next/link";
-import { formatPrice, site, waLink } from "@/lib/site";
+import { BOTTLE_ML, formatPrice, site } from "@/lib/site";
 import { WhatsAppButton } from "./WhatsAppButton";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 
 /**
- * Educational context for Pakistan buyers — not a review page, not trademark misuse in titles/schema.
+ * Homepage conversion block — luxury brand energy, WhatsApp order CTA.
  */
 export function ComparisonSection() {
   return (
     <section
-      className="mx-auto max-w-3xl px-4 py-16 md:py-24"
-      aria-labelledby="compare-heading"
+      className="relative mx-auto max-w-3xl px-4 py-16 md:py-24"
+      aria-labelledby="statement-heading"
     >
-      <p className="text-xs tracking-[0.35em] text-gold uppercase">Buying guide</p>
-      <h2 id="compare-heading" className="font-display mt-3 text-3xl text-ivory md:text-4xl">
-        Perfume price in Pakistan — how to choose
+      <div
+        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent md:inset-x-0"
+        aria-hidden
+      />
+
+      <p className="text-center text-xs tracking-[0.35em] text-gold uppercase">{site.brand}</p>
+      <h2
+        id="statement-heading"
+        className="font-display mt-4 text-center text-3xl leading-tight text-ivory md:text-5xl"
+      >
+        Crafted for a luxury statement.
       </h2>
-      <p className="mt-6 text-mist leading-relaxed">
-        Shoppers comparing luxury perfume Pakistan options often weigh local fragrance houses,
-        international designer bottles sold in PK, and marketplace listings when looking for a long
-        lasting perfume Pakistan buyers can trust — or a clear unisex perfume Pakistan pick under a
-        set budget. Prices and fulfillment quality vary widely across those segments.
+      <p className="mx-auto mt-6 max-w-xl text-center text-mist leading-relaxed md:text-lg">
+        MONEY is a premium unisex perfume made to feel world-class — confident, modern, and
+        impossible to ignore. {site.tagline} {BOTTLE_ML} ml at {formatPrice()}. {site.delivery} —
+        confirmed on WhatsApp before dispatch.
       </p>
-      <p className="mt-4 text-mist leading-relaxed">
-        When you scan online perfume price ranges or high-street counters, use three practical
-        checks: stated concentration and wear notes, who fulfills the order, and total landed cost
-        including delivery. MONEY is positioned as a premium unisex preorder at {formatPrice()} with
-        free delivery all over Pakistan — a perfume under 2000 Pakistan price point without a long
-        checkout form.
-      </p>
-      <p className="mt-4 text-mist leading-relaxed">
-        This section is educational context only. It does not rank or endorse other brands. For the
-        current offer, see{" "}
+
+      <div className="mt-8 flex flex-col items-center gap-2 text-center">
+        <p className="font-display text-2xl text-gold-light md:text-3xl">
+          {BOTTLE_ML} ML · {formatPrice()}
+        </p>
+        <p className="text-sm tracking-wide text-gold">{site.delivery}</p>
+      </div>
+
+      <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Link href="/shop" className="ghost-btn !min-h-12 !px-6 text-sm">
+          {site.shopCtaLabel}
+        </Link>
+        <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>Order now</WhatsAppButton>
+      </div>
+
+      <p className="mt-10 text-center text-sm text-mist/80">
+        See the{" "}
         <Link href="/shop" className="text-gold-light hover:underline">
-          Shop
+          full offer
         </Link>{" "}
         or the{" "}
         <Link href="/11-11" className="text-gold-light hover:underline">
           11.11 sale perfume
-        </Link>{" "}
-        page.
+        </Link>
+        .
       </p>
-      <div className="mt-10 flex justify-center sm:justify-start">
-        <WhatsAppButton href={waLink()}>{site.ctaLabel}</WhatsAppButton>
-      </div>
     </section>
   );
 }

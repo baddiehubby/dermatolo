@@ -22,9 +22,11 @@ export const reviewSettings = {
   perHour: 3,
   perDay: 10,
   revalidateSeconds: 60,
+  /** THIS brief: reviews require moderation before publication. */
+  autoPublish: false,
 };
 
-/** Owner-curated reviews (empty until real ones exist). Used by reviews-store. */
+/** Owner-curated published reviews (empty until real verified ones exist). Never fabricate. */
 export const product = {
   reviews: [] as Review[],
 };

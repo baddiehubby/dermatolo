@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { StickyCta } from "@/components/StickyCta";
@@ -23,15 +24,21 @@ export default function PrivacyPage() {
           <a href={waLink()} className="text-gold-light hover:underline">
             {site.ctaLabel}
           </a>
-          . This website does not take card payments or store checkout forms on a server.
+          . This website does not take card payments. Optional name, address, and phone fields on
+          the shop page only fill your WhatsApp message in your browser — they are not stored on our
+          server as a checkout database.
         </p>
         <p className="mt-4">
           Name, phone, and address you send on WhatsApp are used only to confirm and deliver your
           order. WhatsApp messages are subject to WhatsApp’s own policies.
         </p>
         <p className="mt-4">
-          If review tools are enabled, submitted review text may be stored and shown publicly. Contact
-          us on WhatsApp to request removal.
+          If review tools are enabled, submitted review text may be stored for moderation and, once
+          approved, shown publicly. Contact us on WhatsApp to request removal.
+        </p>
+        <p className="mt-4">
+          Analytics scripts (Google Analytics / Meta Pixel) load only if the site owner has set the
+          corresponding environment variables. Prefer a consent banner where required by law.
         </p>
         <Link href="/" className="mt-8 inline-block text-gold-light hover:underline">
           Back to home
@@ -39,6 +46,7 @@ export default function PrivacyPage() {
       </main>
       <Footer />
       <StickyCta />
+      <FloatingWhatsApp />
     </>
   );
 }

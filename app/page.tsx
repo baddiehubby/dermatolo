@@ -2,43 +2,55 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandVideo } from "@/components/BrandVideo";
 import { ComparisonSection } from "@/components/ComparisonSection";
+import { DeliveryTrust } from "@/components/DeliveryTrust";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { JsonLd } from "@/components/JsonLd";
+import { ProductShowcase } from "@/components/ProductShowcase";
+import { ReviewsSection } from "@/components/reviews/ReviewsSection";
 import { StickyCta } from "@/components/StickyCta";
 import { TrustStrip } from "@/components/TrustStrip";
 import { VideoStrip } from "@/components/VideoStrip";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { getDisplayedReviews } from "@/lib/reviews-store";
+import { productJsonLd } from "@/lib/schema";
 import {
+  BOTTLE_ML,
   BRAND,
+  DELIVERY_NOTE,
   formatPrice,
   pageDescription,
   pageTitle,
   site,
-  waLink,
 } from "@/lib/site";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("Luxury Unisex Perfume Pakistan") },
   description: pageDescription(
-    "Luxury perfume Pakistan — long lasting unisex perfume under 2000.",
+    "MONEY — Smells Like Money. Signature unisex fragrance.",
   ),
   alternates: site.url ? { canonical: "/" } : undefined,
   openGraph: {
     title: pageTitle("Luxury Unisex Perfume Pakistan"),
-    description: pageDescription("Long lasting unisex perfume for Pakistan."),
-    images: [{ url: site.ogImage, alt: `${BRAND} perfume — luxury unisex fragrance Pakistan` }],
+    description: pageDescription("Signature unisex fragrance for Pakistan."),
+    images: [{ url: site.ogImage, alt: `${BRAND} perfume — ${BOTTLE_ML} ml · ${formatPrice()}` }],
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle("Luxury Unisex Perfume Pakistan"),
-    description: pageDescription("Long lasting unisex perfume for Pakistan."),
+    description: pageDescription("Signature unisex fragrance for Pakistan."),
     images: [site.ogImage],
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const reviews = await getDisplayedReviews();
+  const orderHref = orderWhatsAppUrl({ quantity: 1 });
+
   return (
     <>
+      <JsonLd data={productJsonLd("/")} />
       <Header />
       <main>
         <section className="relative overflow-hidden" aria-labelledby="home-h1">
@@ -71,19 +83,33 @@ export default function HomePage() {
               {site.tagline}
             </h1>
             <p
-              className="reveal mt-6 max-w-lg text-base text-mist md:text-lg"
-              style={{ animationDelay: "200ms" }}
+              className="reveal mt-5 max-w-lg text-base text-mist md:text-lg"
+              style={{ animationDelay: "180ms" }}
             >
-              Premium unisex perfume for Pakistan · {formatPrice()} · Free delivery
+              Signature unisex fragrance
+            </p>
+            <p
+              className="reveal mt-4 font-display text-2xl tracking-wide text-gold-light md:text-3xl"
+              style={{ animationDelay: "220ms" }}
+            >
+              {BOTTLE_ML} ML · {formatPrice()}
+            </p>
+            <p
+              className="reveal mt-3 text-sm font-medium tracking-[0.2em] text-gold uppercase"
+              style={{ animationDelay: "260ms" }}
+            >
+              {DELIVERY_NOTE}
             </p>
             <div
               className="reveal pointer-events-auto mt-9 flex flex-col items-center gap-4 sm:flex-row"
-              style={{ animationDelay: "280ms" }}
+              style={{ animationDelay: "300ms" }}
             >
-              <WhatsAppButton href={waLink()}>{site.ctaLabel}</WhatsAppButton>
-              <Link href="/shop" className="ghost-btn !min-h-12 !px-5 text-sm">
-                View offer
+              <Link href="/shop" className="ghost-btn !min-h-12 !px-8 text-sm tracking-wide">
+                {site.shopCtaLabel}
               </Link>
+              <a href={orderHref} target="_blank" rel="noopener noreferrer" className="wa-btn !min-h-12">
+                {site.ctaLabel}
+              </a>
             </div>
             <div className="reveal mt-10 w-full max-w-2xl" style={{ animationDelay: "360ms" }}>
               <TrustStrip />
@@ -91,11 +117,15 @@ export default function HomePage() {
           </div>
         </section>
 
+        <ProductShowcase />
         <VideoStrip />
         <ComparisonSection />
+        <DeliveryTrust />
+        <ReviewsSection reviews={reviews} />
       </main>
       <Footer />
       <StickyCta />
+      <FloatingWhatsApp />
     </>
   );
 }

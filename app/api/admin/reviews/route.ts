@@ -26,6 +26,11 @@ function disabled() {
   return json({ ok: false, message: "Admin is disabled: ADMIN_SECRET is not set." }, 503);
 }
 
+function revalidateStorefront() {
+  revalidatePath("/");
+  revalidatePath("/shop");
+}
+
 export async function GET(request: Request) {
   if (!adminSecret()) return disabled();
   if (!isValidSession(sessionCookie(request))) return json({ ok: false, message: "Unauthorized" }, 401);
@@ -38,10 +43,8 @@ export async function GET(request: Request) {
   }
 }
 
-// No approve/unapprove: reviews are published on submit. The owner can only delete,
-// or mark/unmark Verified Purchase after checking the order out of band.
-type Action = "login" | "logout" | "verify" | "unverify" | "delete";
-const ACTIONS: Action[] = ["login", "logout", "verify", "unverify", "delete"];
+type Action = "login" | "logout" | "verify" | "unverify" | "approve" | "unpublish" | "delete";
+const ACTIONS: Action[] = ["login", "logout", "verify", "unverify", "approve", "unpublish", "delete"];
 
 export async function POST(request: Request) {
   const secret = adminSecret();
@@ -93,11 +96,15 @@ export async function POST(request: Request) {
     let found: boolean;
     if (action === "delete") {
       found = await deleteReview(id);
+    } else if (action === "approve") {
+      found = (await updateReview(id, { status: "published" })) !== null;
+    } else if (action === "unpublish") {
+      found = (await updateReview(id, { status: "pending" })) !== null;
     } else {
       found = (await updateReview(id, { verifiedPurchase: action === "verify" })) !== null;
     }
     if (!found) return json({ ok: false, message: "Not found" }, 404);
-    revalidatePath("/");
+    revalidateStorefront();
     return json({ ok: true });
   } catch (error) {
     console.error("[reviews] Admin action failed:", error);

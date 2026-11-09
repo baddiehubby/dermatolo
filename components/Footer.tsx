@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { BRAND, formatPrice, navItems, site, waLink } from "@/lib/site";
+import { BOTTLE_ML, BRAND, formatPrice, navItems, site } from "@/lib/site";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 import { BrandMark } from "./Icons";
 
 export function Footer() {
+  const orderHref = orderWhatsAppUrl({ quantity: 1 });
   return (
     <footer className="border-t border-gold/20 bg-[#080807] pb-28 pt-16 md:pb-16">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-3">
@@ -11,7 +13,7 @@ export function Footer() {
           <p className="font-display mt-5 text-xl tracking-[0.32em] text-gold">{BRAND}</p>
           <p className="mt-2 text-mist">{site.tagline}</p>
           <p className="mt-5 text-sm text-mist/80">
-            {formatPrice()} · {site.delivery}
+            {BOTTLE_ML} ml · {formatPrice()} · {site.delivery}
           </p>
         </div>
         <div className="space-y-2.5 text-mist">
@@ -24,8 +26,11 @@ export function Footer() {
         </div>
         <div className="space-y-3 text-mist">
           <p className="mb-3 text-xs tracking-[0.28em] text-gold/80 uppercase">Order</p>
+          <Link href="/shop" className="block text-gold-light hover:underline">
+            {site.shopCtaLabel}
+          </Link>
           <a
-            href={waLink()}
+            href={orderHref}
             target="_blank"
             rel="noopener noreferrer"
             className="block text-gold-light hover:underline"
@@ -33,7 +38,7 @@ export function Footer() {
             {site.ctaLabel}
           </a>
           <a
-            href={waLink()}
+            href={orderHref}
             target="_blank"
             rel="noopener noreferrer"
             className="block tabular-nums hover:text-gold-light"
@@ -47,13 +52,13 @@ export function Footer() {
             Terms
           </Link>
           <p className="pt-3 text-sm text-mist/65">
-            WhatsApp preorders only. No card checkout on this site.
+            WhatsApp orders only. No card checkout on this site. {site.delivery}.
           </p>
         </div>
       </div>
       <div className="mx-auto mt-14 max-w-6xl border-t border-gold/10 px-4 pt-6">
         <p className="text-xs text-mist/50">
-          © {new Date().getFullYear()} {BRAND}. Luxury unisex perfume · Pakistan.
+          © {new Date().getFullYear()} {BRAND}. Luxury unisex perfume · Pakistan · kaptaan804.com
         </p>
       </div>
     </footer>

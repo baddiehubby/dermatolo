@@ -1,20 +1,40 @@
 /**
- * CENTRAL SITE CONFIG — change WhatsApp, price, and brand copy here only.
+ * CENTRAL SITE CONFIG — change WhatsApp, price, bottle size, and brand copy here only.
+ * Live brand domain: https://www.kaptaan804.com (set NEXT_PUBLIC_SITE_URL to match).
  */
 
 export const WHATSAPP_NUMBER = "923102201180";
 /** Local Pakistan display format for UI. */
 export const WHATSAPP_DISPLAY = "0310 220 1180";
-export const WHATSAPP_MESSAGE =
-  "Hi, I want to order MONEY perfume (PKR 1999, free delivery).";
 
 export const PRICE = 1999;
 export const CURRENCY = "PKR";
-export const FREE_DELIVERY = true;
+export const BOTTLE_ML = 50;
+/** Delivery is paid by the customer — never claim free delivery. */
+export const FREE_DELIVERY = false;
+export const DELIVERY_NOTE = "Delivery charges apply";
+export const DELIVERY_DETAIL =
+  "Delivery is charged separately and confirmed on WhatsApp before dispatch.";
 
 export const BRAND = "MONEY";
-export const TAGLINE = "Smells like money.";
+export const TAGLINE = "Smells Like Money.";
 export const PRODUCT_NAME = "MONEY Perfume";
+export const PRODUCT_LABEL = "MONEY Unisex Perfume";
+
+/** Default short WhatsApp opener (order builder adds qty / address fields). */
+export const WHATSAPP_MESSAGE = `Hi, I want to order ${PRODUCT_NAME} (${BOTTLE_ML} ml, PKR ${PRICE}). Delivery charged separately.`;
+
+/**
+ * International readiness (architecture only).
+ * Only activate a market when price + delivery are confirmed — do not promise unsupported shipping.
+ */
+export const markets = [
+  { code: "PK", currency: "PKR", price: 1999, active: true },
+  { code: "AE", currency: "AED", price: null, active: false },
+  { code: "SA", currency: "SAR", price: null, active: false },
+  { code: "GB", currency: "GBP", price: null, active: false },
+  { code: "US", currency: "USD", price: null, active: false },
+] as const;
 
 export function waLink(message: string = WHATSAPP_MESSAGE): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -39,16 +59,23 @@ function configuredSiteUrl(): string | null {
 export const site = {
   brand: BRAND,
   productName: PRODUCT_NAME,
+  productLabel: PRODUCT_LABEL,
   tagline: TAGLINE,
+  bottleMl: BOTTLE_ML,
   locale: "en_PK",
   language: "en",
   url: configuredSiteUrl(),
   country: "Pakistan",
-  delivery: "Free delivery all over Pakistan",
-  deliveryDays: "2–4 days",
+  delivery: DELIVERY_NOTE,
+  deliveryDetail: DELIVERY_DETAIL,
+  /** Timing is confirmed per order on WhatsApp — do not invent same-day claims. */
+  deliveryDays: "confirmed on WhatsApp",
   payment: "Cash on delivery (COD)",
   authenticity: "Authentic MONEY fragrance",
+  exchange:
+    "Unopened bottles in original packaging may be discussed for exchange within 3 days of delivery if damaged in transit — message WhatsApp with order details.",
   ctaLabel: "Order on WhatsApp",
+  shopCtaLabel: "Shop Now",
   whatsappDisplay: WHATSAPP_DISPLAY,
   /**
    * OG / social image.
@@ -80,6 +107,7 @@ export const site = {
       poster: "/videos/posters/money-atmosphere.jpg",
     },
   },
+  markets,
 };
 
 export const navItems = [
@@ -93,31 +121,39 @@ export const navItems = [
 export const faqs = [
   {
     q: "How do I order MONEY perfume?",
-    a: `Tap “Order on WhatsApp”. A pre-filled message opens for ${PRODUCT_NAME} at ${formatPrice()}. Share your name, phone, and full delivery address to confirm.`,
+    a: `Tap “Shop Now” or “Order on WhatsApp”. Choose quantity, optionally fill your name, address, and phone, then open WhatsApp. The message includes ${PRODUCT_NAME}, ${BOTTLE_ML} ml, ${formatPrice()} each, quantity, product subtotal, and that delivery is charged separately.`,
   },
   {
     q: "What is the perfume price in Pakistan?",
-    a: `Preorder price is ${formatPrice()}. ${site.delivery}. That keeps MONEY in the perfume under 2000 Pakistan range with free nationwide delivery.`,
+    a: `${PRODUCT_LABEL} (${BOTTLE_ML} ml) is ${formatPrice()}. Delivery charges apply and are confirmed on WhatsApp before dispatch.`,
+  },
+  {
+    q: "Is delivery free?",
+    a: "No. Delivery charges apply and are paid by the customer. Exact charges and timing are confirmed on WhatsApp for your city.",
   },
   {
     q: "Do you deliver outside Karachi?",
-    a: "Yes. We offer free delivery all over Pakistan. Typical delivery takes 2–4 days depending on your city.",
+    a: "Yes — we deliver across Pakistan. Delivery charges and timing are confirmed on WhatsApp for your city.",
   },
   {
     q: "Is cash on delivery available?",
-    a: "Yes. COD is available. Pay when your parcel arrives.",
+    a: "Yes. COD is available. Pay when your parcel arrives. Delivery charges still apply and will be confirmed on WhatsApp.",
   },
   {
     q: "Is MONEY authentic?",
     a: "Yes. You order directly from the MONEY brand WhatsApp channel — not a marketplace reseller listing.",
   },
   {
-    q: "What is your return policy?",
-    a: "Unopened bottles in original packaging may be discussed for return or exchange within 3 days of delivery. Message us on WhatsApp with your order details.",
+    q: "What is your exchange / damage policy?",
+    a: site.exchange,
   },
   {
     q: "Is MONEY a unisex perfume?",
-    a: "Yes. MONEY is a premium unisex perfume made for anyone who wants a confident, modern scent — a long lasting perfume Pakistan shoppers can wear day or night.",
+    a: "Yes. MONEY is a premium unisex perfume — a confident, modern scent you can wear day or night.",
+  },
+  {
+    q: "How do I contact you?",
+    a: `Message us on WhatsApp at ${WHATSAPP_DISPLAY}. All orders and delivery questions are handled there.`,
   },
 ] as const;
 
@@ -131,9 +167,9 @@ export function getElevenElevenTarget(): Date {
 }
 
 export function pageTitle(keyword: string): string {
-  return `${keyword} | MONEY Perfume Pakistan`;
+  return `${keyword} | MONEY Perfume | kaptaan804.com`;
 }
 
 export function pageDescription(focus: string): string {
-  return `${focus} ${PRODUCT_NAME} — ${formatPrice()}, free delivery all over Pakistan. Preorder on WhatsApp.`;
+  return `${focus} ${PRODUCT_NAME} — ${BOTTLE_ML} ml, ${formatPrice()}. ${DELIVERY_NOTE}. Order on WhatsApp.`;
 }

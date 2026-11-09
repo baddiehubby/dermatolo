@@ -26,7 +26,31 @@ export function toUrduDigits(value: number | string): string {
  * so the server and the browser always render the same text.
  * Returns null for an unreadable date, in which case no date is shown.
  */
+const enMonths = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+/** English date for MONEY storefront (e.g. "12 Mar 2026"). */
 export function formatReviewDate(iso: string): string | null {
+  const time = Date.parse(iso);
+  if (Number.isNaN(time)) return null;
+  const date = new Date(time);
+  return `${date.getUTCDate()} ${enMonths[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
+/** Legacy Urdu date helper (kept for any Urdu UI that still needs it). */
+export function formatReviewDateUrdu(iso: string): string | null {
   const time = Date.parse(iso);
   if (Number.isNaN(time)) return null;
   const date = new Date(time);
@@ -84,7 +108,8 @@ export const reviewMessages = {
   full: "اس وقت نئی آراء قبول نہیں کی جا رہیں۔ براہِ کرم بعد میں کوشش کریں۔",
   invalid: "بھیجی گئی معلومات درست نہیں۔ براہِ کرم فارم دوبارہ دیکھیں۔",
   generic: "کچھ مسئلہ پیش آ گیا۔ براہِ کرم دوبارہ کوشش کریں۔",
-  success: "آپ کا جائزہ کامیابی سے شامل کر دیا گیا ہے۔ شکریہ!",
+  success: "Thank you — your review was submitted and is awaiting moderation before it appears publicly.",
+  successUr: "آپ کا جائزہ جمع ہو گیا ہے۔ منظوری کے بعد یہ صفحے پر نظر آئے گا۔ شکریہ!",
 } as const;
 
 /** Bidi overrides, zero-width space and BOM. (ZWNJ/ZWJ are kept: Urdu needs them.) */

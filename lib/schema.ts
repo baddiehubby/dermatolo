@@ -1,6 +1,8 @@
 import {
+  BOTTLE_ML,
   BRAND,
   CURRENCY,
+  DELIVERY_NOTE,
   faqs,
   formatPrice,
   PRICE,
@@ -31,7 +33,9 @@ export function organizationJsonLd() {
   return data;
 }
 
-export function productJsonLd(pagePath: "/shop" | "/11-11" = "/shop") {
+export function productJsonLd(pagePath: "/shop" | "/11-11" | "/" = "/shop") {
+  const offerUrl = site.url ? absUrl(pagePath === "/" ? "/shop" : pagePath) : pagePath === "/" ? "/shop" : pagePath;
+
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -40,15 +44,16 @@ export function productJsonLd(pagePath: "/shop" | "/11-11" = "/shop") {
       "@type": "Brand",
       name: BRAND,
     },
-    description: `${PRODUCT_NAME}. ${site.tagline} Luxury unisex perfume for Pakistan. Preorder price ${formatPrice()}. ${site.delivery}.`,
+    description: `${PRODUCT_NAME}. ${site.tagline} Unisex perfume, ${BOTTLE_ML} ml. Price ${formatPrice()}. ${DELIVERY_NOTE}. Order on WhatsApp.`,
     category: "Perfume",
+    size: `${BOTTLE_ML} ml`,
     image: [absUrl(site.ogImage)],
     offers: {
       "@type": "Offer",
       price: PRICE,
       priceCurrency: CURRENCY,
-      availability: "https://schema.org/PreOrder",
-      url: site.url ? absUrl(pagePath) : pagePath,
+      availability: "https://schema.org/InStock",
+      url: offerUrl,
       seller: {
         "@type": "Organization",
         name: BRAND,
@@ -57,9 +62,10 @@ export function productJsonLd(pagePath: "/shop" | "/11-11" = "/shop") {
         "@type": "Country",
         name: "Pakistan",
       },
+      // Shipping rate is confirmed on WhatsApp — do not invent a fixed delivery price in schema.
     },
   };
-  if (site.url) data.url = absUrl(pagePath);
+  if (site.url) data.url = offerUrl;
   return data;
 }
 

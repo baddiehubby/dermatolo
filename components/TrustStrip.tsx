@@ -2,7 +2,7 @@ import { site } from "@/lib/site";
 
 const items = [
   { label: site.payment, short: "COD" },
-  { label: `Delivery ${site.deliveryDays}`, short: "2–4 days" },
+  { label: site.delivery, short: "Delivery charged" },
   { label: site.authenticity, short: "Authentic" },
 ] as const;
 

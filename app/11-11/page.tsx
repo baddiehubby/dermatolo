@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { Countdown } from "@/components/Countdown";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
@@ -10,29 +11,30 @@ import { TrustStrip } from "@/components/TrustStrip";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { productJsonLd } from "@/lib/schema";
 import {
+  BOTTLE_ML,
   formatPrice,
   getElevenElevenTarget,
   pageDescription,
   pageTitle,
   site,
-  waLink,
 } from "@/lib/site";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("11.11 Sale Perfume Pakistan") },
   description: pageDescription(
-    "11.11 sale perfume — lock PKR 1999 luxury unisex fragrance with free delivery.",
+    `11.11 sale perfume — lock ${formatPrice()} for ${BOTTLE_ML} ml MONEY.`,
   ),
   alternates: site.url ? { canonical: "/11-11" } : undefined,
   openGraph: {
     title: pageTitle("11.11 Sale Perfume Pakistan"),
-    description: pageDescription("11.11 sale perfume preorder."),
+    description: pageDescription("11.11 sale perfume order."),
     images: [{ url: site.ogImage, alt: "MONEY 11.11 sale perfume Pakistan" }],
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle("11.11 Sale Perfume Pakistan"),
-    description: pageDescription("11.11 sale perfume preorder."),
+    description: pageDescription("11.11 sale perfume order."),
     images: [site.ogImage],
   },
 };
@@ -56,7 +58,7 @@ export default function ElevenElevenPage() {
           <p className="text-xs tracking-[0.4em] text-gold uppercase">11.11 Sale</p>
           <div className="mx-auto mt-5 h-px w-12 bg-gold/60" aria-hidden />
           <h1 className="font-display mt-5 text-4xl text-ivory md:text-5xl">
-            Preorder price {formatPrice()}
+            {BOTTLE_ML} ml · {formatPrice()}
           </h1>
           <p className="mt-4 text-mist leading-relaxed">
             {site.delivery}. Confirm your 11.11 perfume order on WhatsApp before the window closes.
@@ -73,14 +75,17 @@ export default function ElevenElevenPage() {
         <div className="mt-10 space-y-5 border border-gold/25 bg-ink-100/80 px-6 py-8 text-center">
           <h2 className="font-display text-2xl text-ivory">The offer</h2>
           <p className="text-mist leading-relaxed">
-            MONEY unisex perfume — preorder {formatPrice()}, free delivery all over Pakistan, COD
-            available. A clear perfume under 2000 Pakistan preorder for 11.11.
+            MONEY unisex perfume — {BOTTLE_ML} ml at {formatPrice()}. {site.delivery}. COD available.
+            Confirm charges and delivery timing on WhatsApp.
           </p>
           <div className="pt-1">
             <TrustStrip />
           </div>
-          <div className="flex justify-center pt-3">
-            <WhatsAppButton href={waLink()}>{site.ctaLabel}</WhatsAppButton>
+          <div className="flex flex-col items-center justify-center gap-3 pt-3 sm:flex-row">
+            <Link href="/shop" className="ghost-btn !min-h-12">
+              {site.shopCtaLabel}
+            </Link>
+            <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>{site.ctaLabel}</WhatsAppButton>
           </div>
           <p className="text-sm text-mist/65">WhatsApp {site.whatsappDisplay}</p>
         </div>
@@ -99,6 +104,7 @@ export default function ElevenElevenPage() {
       </main>
       <Footer />
       <StickyCta />
+      <FloatingWhatsApp />
     </>
   );
 }

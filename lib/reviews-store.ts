@@ -13,34 +13,34 @@ import { usableReviews } from "./reviews";
  *  - Anywhere that is NOT Vercel and has no Redis vars (`next dev` and `next start`):
  *    a JSON file at .data/reviews.json (git-ignored), with a one-time console warning.
  *  - On Vercel without Redis vars: mode "none" (read-only filesystem, nothing can persist).
- *    The API answers 503 and the server log names the missing variables.
  *  - REVIEWS_STORE=redis|file|off overrides the choice.
+ *
+ * Moderation: new submissions are status "pending" until approved in /admin/reviews.
  */
 
-/**
- * A stored review. There is no status field: no approval step exists, so every
- * stored review is published. (Existing records that carry a legacy `area` are read as `city`.)
- */
+export type ReviewStatus = "pending" | "published";
+
 export type StoredReview = {
   id: string;
   name: string;
   rating: number;
-  /** The review text, in Urdu or any language. */
+  /** The review text, in Urdu, English, or any language. */
   textUr: string;
   city?: string;
   /** ISO timestamp. */
   createdAt: string;
   /**
    * Always false on submit. There is no order database, so nothing can verify an order
-   * automatically; only the owner can set it, in the management page, after checking
-   * the order out of band.
+   * automatically; only the owner can set it after checking the order out of band.
    */
   verifiedPurchase: boolean;
+  /** pending = awaiting moderation; published = visible on storefront. */
+  status: ReviewStatus;
 };
 
 export type StoreMode = "redis" | "file" | "none";
 
-const HASH_KEY = "eagle:reviews";
+const HASH_KEY = "money:reviews";
 
 function redisConfig(): { url: string; token: string } | null {
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
@@ -56,15 +56,6 @@ function warnOnce(key: string, message: string, level: "warn" | "error" = "warn"
   console[level](`[reviews] ${message}`);
 }
 
-/**
- * Backend selection, in order:
- *  1. REVIEWS_STORE=off              -> "none" (explicit opt-out)
- *  2. REVIEWS_STORE=redis, or Redis env vars present -> "redis"
- *  3. REVIEWS_STORE=file, or not running on Vercel   -> "file" (.data/reviews.json),
- *     in both `next dev` and `next start`, with a one-time warning
- *  4. On Vercel with no Redis vars -> "none": the filesystem there is read-only and
- *     ephemeral, so nothing could be persisted. A clear server error names the variables.
- */
 export function storeMode(): StoreMode {
   const forced = (process.env.REVIEWS_STORE || "").trim().toLowerCase();
   if (forced === "off") return "none";
@@ -104,13 +95,8 @@ async function redis(command: (string | number)[]): Promise<unknown> {
     method: "POST",
     headers: { Authorization: `Bearer ${config.token}`, "Content-Type": "application/json" },
     body: JSON.stringify(command),
-    // No explicit `cache` option on purpose: `cache: "no-store"` makes the homepage
-    // render dynamically (DYNAMIC_SERVER_USAGE), which broke the ISR page. API routes are
-    // force-dynamic, so their calls (INCR, HSET, ...) are never cached anyway.
     signal: AbortSignal.timeout(5000),
   });
-  // Upstash answers { result } on success and { error } (with a non-2xx status) on failure.
-  // The error text never contains the token, so it is safe to put in server logs.
   let data: { result?: unknown; error?: string } = {};
   try {
     data = (await response.json()) as typeof data;
@@ -131,6 +117,8 @@ function parseRecord(raw: unknown): StoredReview | null {
     const city = r.city ?? r.area;
     if (typeof r.id !== "string" || typeof r.name !== "string" || typeof r.textUr !== "string") return null;
     if (typeof r.rating !== "number" || typeof r.createdAt !== "string") return null;
+    // Legacy records without status → pending (require explicit approve under this brief).
+    const status: ReviewStatus = r.status === "published" ? "published" : "pending";
     return {
       id: r.id,
       name: r.name,
@@ -139,6 +127,7 @@ function parseRecord(raw: unknown): StoredReview | null {
       ...(city ? { city } : {}),
       createdAt: r.createdAt,
       verifiedPurchase: r.verifiedPurchase === true,
+      status,
     };
   } catch {
     return null;
@@ -154,7 +143,6 @@ const dataFile = () => path.join(dataDir(), "reviews.json");
 
 let fileQueue: Promise<unknown> = Promise.resolve();
 
-/** Serializes read-modify-write so concurrent requests cannot clobber each other. */
 function withFile<T>(work: (data: FileData) => T | Promise<T>, write: boolean): Promise<T> {
   const run = fileQueue.then(async () => {
     let data: FileData = { reviews: [], rate: {} };
@@ -214,7 +202,7 @@ export async function createReview(review: StoredReview): Promise<void> {
 
 export async function updateReview(
   id: string,
-  patch: Partial<Pick<StoredReview, "verifiedPurchase">>,
+  patch: Partial<Pick<StoredReview, "verifiedPurchase" | "status">>,
 ): Promise<StoredReview | null> {
   const mode = storeMode();
   if (mode === "redis") {
@@ -250,16 +238,10 @@ export async function deleteReview(id: string): Promise<boolean> {
   throw new Error("store unavailable");
 }
 
-/**
- * Counts one attempt for `key` inside a fixed window and says whether it is still
- * within `limit`. Redis uses INCR + EXPIRE (TTL); the file store keeps timestamps.
- */
 export async function hitRateLimit(key: string, windowSeconds: number, limit: number): Promise<boolean> {
   const mode = storeMode();
   if (mode === "redis") {
-    const redisKey = `eagle:rl:${key}`;
-    // Create the key WITH its TTL first (NX = only if absent), then INCR. This way a key
-    // can never exist without an expiry, even if a request dies between the two calls.
+    const redisKey = `money:rl:${key}`;
     await redis(["SET", redisKey, 0, "EX", windowSeconds, "NX"]);
     const count = Number(await redis(["INCR", redisKey]));
     return count <= limit;
@@ -280,8 +262,6 @@ export async function hitRateLimit(key: string, windowSeconds: number, limit: nu
   throw new Error("store unavailable");
 }
 
-/* ------------------------------ Homepage use ----------------------------- */
-
 function toDisplay(stored: StoredReview): Review {
   return {
     id: stored.id,
@@ -295,23 +275,20 @@ function toDisplay(stored: StoredReview): Review {
 }
 
 /**
- * The single list the homepage shows AND uses for review JSON-LD: owner-curated
- * `product.reviews` plus every stored review, invalid entries dropped, newest first.
+ * Published reviews only for the storefront + review JSON-LD.
+ * Owner-curated `product.reviews` are treated as already published.
  */
 export async function getDisplayedReviews(): Promise<Review[]> {
   const stored = await getStoredReviews();
   return usableReviews([...product.reviews, ...stored]).sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
 }
 
-/**
- * Stored (customer-submitted) reviews. Fails soft: if the store is missing or
- * unreachable it returns [] so the page still renders (and `next build` never fails).
- */
+/** Published customer-submitted reviews only. */
 export async function getStoredReviews(): Promise<Review[]> {
   if (storeMode() === "none") return [];
   try {
     const all = await listAllReviews();
-    return usableReviews(all.map(toDisplay));
+    return usableReviews(all.filter((r) => r.status === "published").map(toDisplay));
   } catch (error) {
     console.error("[reviews] Could not read reviews; rendering the page without them:", error);
     return [];

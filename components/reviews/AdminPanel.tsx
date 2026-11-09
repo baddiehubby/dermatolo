@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatReviewDate } from "@/lib/reviews";
 import type { StoredReview } from "@/lib/reviews-store";
 import { StarRating } from "./StarRating";
@@ -20,7 +20,7 @@ async function post(body: Record<string, unknown>): Promise<{ ok: boolean; messa
 }
 
 const buttonClass =
-  "min-h-10 rounded-full border border-gold/40 px-4 py-1.5 text-sm text-gold-light hover:bg-gold/10 disabled:opacity-50";
+  "min-h-10 rounded-sm border border-gold/40 px-4 py-1.5 text-sm text-gold-light hover:bg-gold/10 disabled:opacity-50";
 
 export function AdminLogin() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export function AdminLogin() {
 
   return (
     <main className="mx-auto max-w-sm px-4 py-20" dir="ltr">
-      <form onSubmit={submit} className="surface-card space-y-4 rounded-3xl p-6">
+      <form onSubmit={submit} className="surface-card space-y-4 border border-gold/20 p-6">
         <h1 className="text-xl font-semibold text-gold-light">Manage reviews</h1>
         <label className="block text-sm text-mist">
           Admin password
@@ -54,7 +54,7 @@ export function AdminLogin() {
             onChange={(event) => setSecret(event.target.value)}
             autoComplete="current-password"
             required
-            className="mt-2 w-full rounded-xl border border-gold/30 bg-black/40 px-4 py-3 text-ivory"
+            className="mt-2 w-full rounded-sm border border-gold/30 bg-black/40 px-4 py-3 text-ivory"
           />
         </label>
         {error ? <p role="alert" className="text-sm text-red-300">{error}</p> : null}
@@ -67,25 +67,51 @@ export function AdminLogin() {
 }
 
 function ReviewRow({ review, onAction, busy }: { review: StoredReview; onAction: (action: string, id: string) => void; busy: boolean }) {
+  const pending = review.status !== "published";
   return (
-    <li className="surface-card rounded-2xl p-5">
+    <li className="surface-card border border-gold/20 p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="font-semibold text-ivory">
             {review.name}
             {review.city ? <span className="ms-2 text-sm font-normal text-mist/70">· {review.city}</span> : null}
           </p>
-          <div className="mt-1 flex items-center gap-3">
+          <div className="mt-1 flex flex-wrap items-center gap-3">
             <StarRating value={review.rating} className="h-4" />
             <span className="text-xs text-mist/70">{formatReviewDate(review.createdAt)}</span>
-            {review.verifiedPurchase ? <span className="rounded-full border border-gold/40 px-2 py-0.5 text-xs text-gold-light">Verified</span> : null}
+            <span
+              className={`rounded-sm border px-2 py-0.5 text-xs ${
+                pending ? "border-amber-400/40 text-amber-200" : "border-gold/40 text-gold-light"
+              }`}
+            >
+              {pending ? "Pending" : "Published"}
+            </span>
+            {review.verifiedPurchase ? (
+              <span className="rounded-sm border border-gold/40 px-2 py-0.5 text-xs text-gold-light">Verified</span>
+            ) : null}
           </div>
         </div>
       </div>
-      <p className="mt-3 whitespace-pre-wrap break-words leading-8 text-mist" dir="auto">{review.textUr}</p>
+      <p className="mt-3 whitespace-pre-wrap break-words leading-relaxed text-mist" dir="auto">
+        {review.textUr}
+      </p>
       <div className="mt-4 flex flex-wrap gap-2">
-        <button type="button" className={buttonClass} disabled={busy} onClick={() => onAction(review.verifiedPurchase ? "unverify" : "verify", review.id)}>
-          {review.verifiedPurchase ? "Unmark Verified Purchase" : "Mark Verified Purchase (only after checking the order)"}
+        {pending ? (
+          <button type="button" className={buttonClass} disabled={busy} onClick={() => onAction("approve", review.id)}>
+            Approve & publish
+          </button>
+        ) : (
+          <button type="button" className={buttonClass} disabled={busy} onClick={() => onAction("unpublish", review.id)}>
+            Unpublish
+          </button>
+        )}
+        <button
+          type="button"
+          className={buttonClass}
+          disabled={busy}
+          onClick={() => onAction(review.verifiedPurchase ? "unverify" : "verify", review.id)}
+        >
+          {review.verifiedPurchase ? "Unmark Verified Purchase" : "Mark Verified Purchase"}
         </button>
         <button
           type="button"
@@ -95,7 +121,7 @@ function ReviewRow({ review, onAction, busy }: { review: StoredReview; onAction:
             if (window.confirm("Delete this review permanently?")) onAction("delete", review.id);
           }}
         >
-          Delete / حذف کریں
+          Delete
         </button>
       </div>
     </li>
@@ -106,6 +132,9 @@ export function AdminPanel({ reviews }: { reviews: StoredReview[] }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+
+  const pendingCount = useMemo(() => reviews.filter((r) => r.status !== "published").length, [reviews]);
+  const publishedCount = reviews.length - pendingCount;
 
   async function act(action: string, id: string) {
     setBusy(true);
@@ -124,12 +153,17 @@ export function AdminPanel({ reviews }: { reviews: StoredReview[] }) {
   return (
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-12" dir="ltr">
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold text-gold-light">Manage reviews ({reviews.length})</h1>
-        <button type="button" className={buttonClass} onClick={logout}>Sign out</button>
+        <h1 className="text-2xl font-semibold text-gold-light">
+          Manage reviews ({reviews.length})
+        </h1>
+        <button type="button" className={buttonClass} onClick={logout}>
+          Sign out
+        </button>
       </div>
-      <p className="text-sm leading-6 text-mist/80">
-        Reviews are published as soon as customers submit them. Delete anything abusive here. There is no order
-        database, so the Verified Purchase badge is never automatic: mark it only after checking the order yourself.
+      <p className="text-sm leading-relaxed text-mist/80">
+        New reviews stay <strong className="text-ivory">pending</strong> until you approve them.
+        Currently {pendingCount} pending, {publishedCount} published. Mark Verified Purchase only after
+        checking the order yourself.
       </p>
       {error ? <p role="alert" className="text-sm text-red-300">{error}</p> : null}
       {reviews.length === 0 ? (

@@ -49,6 +49,35 @@ body {
         rgba(255, 255, 255, 0.012) 4px
       );
   }
+
+  .surface-card {
+    @apply bg-ink-100/80;
+  }
+}
+
+.reviews-shell {
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201, 162, 39, 0.08), transparent 60%);
+}
+
+.review-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.review-card {
+  flex: 0 0 min(85%, 22rem);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .review-card {
+    flex-basis: min(45%, 24rem);
+  }
 }
 
 .no-scrollbar {

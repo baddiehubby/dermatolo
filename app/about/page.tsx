@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { StickyCta } from "@/components/StickyCta";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { BRAND, pageDescription, pageTitle, site, waLink } from "@/lib/site";
+import { BOTTLE_ML, BRAND, formatPrice, pageDescription, pageTitle, site } from "@/lib/site";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("About MONEY Luxury Perfume") },
@@ -41,15 +43,18 @@ export default function AboutPage() {
         <p className="mt-6 text-lg text-mist leading-relaxed">{site.tagline}</p>
         <p className="mt-5 text-mist leading-relaxed">
           MONEY is a luxury unisex perfume for people who want a clear scent statement without
-          noise. One formula. One price. Direct WhatsApp preorder across Pakistan, with free delivery
-          and cash on delivery.
+          noise. One formula. One bottle size ({BOTTLE_ML} ml). One price ({formatPrice()}). Direct
+          WhatsApp order across Pakistan. {site.delivery}.
         </p>
         <p className="mt-5 text-mist leading-relaxed">
-          We keep the storefront simple on purpose: no cart maze, no invented claims — just the
-          bottle, the offer, and a conversation on WhatsApp.
+          We keep the storefront simple on purpose: no cart maze, no invented fragrance notes, no
+          fabricated reviews — just the offer, cinematic brand films, and a conversation on WhatsApp.
         </p>
-        <div className="mt-10">
-          <WhatsAppButton href={waLink()}>{site.ctaLabel}</WhatsAppButton>
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <Link href="/shop" className="ghost-btn !min-h-12">
+            {site.shopCtaLabel}
+          </Link>
+          <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>{site.ctaLabel}</WhatsAppButton>
         </div>
         <p className="mt-8 text-sm text-mist/70">
           <Link href="/shop" className="text-gold-light hover:underline">
@@ -67,6 +72,7 @@ export default function AboutPage() {
       </main>
       <Footer />
       <StickyCta />
+      <FloatingWhatsApp />
     </>
   );
 }

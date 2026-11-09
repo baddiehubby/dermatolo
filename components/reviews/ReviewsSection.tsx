@@ -1,5 +1,5 @@
 import type { Review } from "@/lib/product";
-import { summarizeReviews, toUrduDigits, usableReviews } from "@/lib/reviews";
+import { summarizeReviews, usableReviews } from "@/lib/reviews";
 import { reviewHref } from "@/lib/whatsapp";
 import { BrandMark, WhatsAppIcon } from "../Icons";
 import { ReviewCard } from "./ReviewCard";
@@ -8,7 +8,7 @@ import { ReviewPlaceholder } from "./ReviewPlaceholder";
 import { StarRating } from "./StarRating";
 
 type ReviewsSectionProps = {
-  /** Real customer reviews only (static + submitted). Empty array renders the honest empty state. */
+  /** Real published reviews only. Empty array renders the honest empty state. */
   reviews: readonly Review[];
 };
 
@@ -17,28 +17,28 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
   const summary = summarizeReviews(real);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 md:py-20" aria-labelledby="reviews-heading">
-      <div className="reviews-shell reveal relative overflow-hidden rounded-[1.75rem] border border-gold/20 px-4 py-12 sm:px-8 md:px-10 md:py-14">
+    <section className="mx-auto max-w-6xl px-4 py-16 md:py-24" aria-labelledby="reviews-heading">
+      <div className="reviews-shell reveal relative overflow-hidden border border-gold/20 bg-ink-100/60 px-4 py-12 sm:px-8 md:px-10 md:py-14">
         <BrandMark className="pointer-events-none absolute -end-10 -top-10 h-56 w-56 text-gold/[0.06] md:h-72 md:w-72" />
 
         <header className="relative text-center">
-          <p className="font-latin text-[0.72rem] font-medium tracking-[0.42em] text-gold">REVIEWS</p>
-          <h2 id="reviews-heading" className="font-nastaliq mt-3 text-4xl text-white md:text-5xl">
-            صارفین کی آراء
+          <p className="text-[0.72rem] font-medium tracking-[0.42em] text-gold uppercase">Reviews</p>
+          <h2 id="reviews-heading" className="font-display mt-3 text-3xl text-ivory md:text-5xl">
+            What customers say
           </h2>
-          <p className="mx-auto mt-4 max-w-xl leading-8 text-mist">
-            صارفین کے اصل تجربات، انہی کے اپنے الفاظ میں۔
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-mist md:text-base">
+            Genuine published reviews only. New submissions are moderated before they appear here.
           </p>
 
           {summary ? (
-            <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-full border border-gold/30 bg-black/30 px-6 py-3">
-              <span className="font-latin text-2xl font-medium text-gold-light" dir="ltr">
+            <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border border-gold/30 bg-black/30 px-6 py-3">
+              <span className="font-display text-2xl font-medium text-gold-light" dir="ltr">
                 {summary.average.toFixed(1)}
                 <span className="text-base text-mist/70"> / 5</span>
               </span>
               <StarRating value={summary.average} className="h-5" />
               <span className="text-sm text-mist">
-                {toUrduDigits(summary.count)} {summary.count === 1 ? "رائے" : "آراء"} کی بنیاد پر
+                Based on {summary.count} {summary.count === 1 ? "review" : "reviews"}
               </span>
             </div>
           ) : null}
@@ -48,7 +48,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
           {summary ? (
             <div
               role="region"
-              aria-label="صارفین کی آراء، افقی طور پر سوائپ کریں"
+              aria-label="Customer reviews, swipe horizontally"
               tabIndex={0}
               className="review-track no-scrollbar"
             >
@@ -62,32 +62,24 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
         </div>
 
         <div className="relative mt-10 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:gap-4">
-          <a
-            href="#review-form"
-            className="inline-flex min-h-14 w-full items-center justify-center rounded-full bg-gradient-to-b from-gold-light to-gold px-8 py-3.5 text-base font-semibold text-ink shadow-gold touch-manipulation focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-light sm:w-auto"
-          >
-            آپ بھی اپنی رائے دیں
+          <a href="#review-form" className="ghost-btn w-full !min-h-12 sm:w-auto">
+            Write a review
           </a>
           <a
             href={reviewHref()}
             target="_blank"
             rel="noopener noreferrer"
-            className="ghost-btn w-full gap-2 sm:w-auto"
+            className="ghost-btn w-full gap-2 !min-h-12 sm:w-auto"
           >
             <WhatsAppIcon />
-            واٹس ایپ پر رائے بھیجیں
+            Share via WhatsApp
           </a>
         </div>
 
         <div id="review-form" className="relative mx-auto mt-10 max-w-2xl scroll-mt-28">
           <ReviewForm />
-          <noscript>
-            <p className="mt-4 text-center text-sm leading-7 text-mist">
-              رائے کا فارم استعمال کرنے کے لیے جاوا اسکرپٹ درکار ہے۔ آپ واٹس ایپ کے ذریعے بھی رائے بھیج سکتے ہیں۔
-            </p>
-          </noscript>
           <p className="mt-4 text-center text-xs leading-6 text-mist/70">
-            فارم سے جمع کرائی گئی رائے فوراً شائع ہو جاتی ہے۔ واٹس ایپ کے ذریعے رائے بھیجنے پر وہ آپ کی اجازت کے بعد ہی شائع ہو گی۔
+            Submitted reviews stay pending until approved. Average and star counts only use published reviews.
           </p>
         </div>
       </div>

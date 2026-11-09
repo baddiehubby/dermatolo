@@ -1,27 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { JsonLd } from "@/components/JsonLd";
 import { StickyCta } from "@/components/StickyCta";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { faqJsonLd } from "@/lib/schema";
-import { faqs, pageDescription, pageTitle, site, waLink } from "@/lib/site";
+import { faqs, pageDescription, pageTitle, site } from "@/lib/site";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("Perfume Delivery FAQ") },
-  description: pageDescription("Delivery, authenticity, returns, and COD for MONEY perfume."),
+  description: pageDescription("Delivery charges, authenticity, returns, and COD for MONEY perfume."),
   alternates: site.url ? { canonical: "/faq" } : undefined,
   openGraph: {
     title: pageTitle("Perfume Delivery FAQ"),
-    description: pageDescription("Delivery, authenticity, returns, and COD for MONEY perfume."),
+    description: pageDescription("Delivery charges, authenticity, returns, and COD for MONEY perfume."),
     images: [{ url: site.ogImage, alt: "MONEY perfume delivery FAQ Pakistan" }],
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle("Perfume Delivery FAQ"),
-    description: pageDescription("Delivery, authenticity, returns, and COD for MONEY perfume."),
+    description: pageDescription("Delivery charges, authenticity, returns, and COD for MONEY perfume."),
     images: [site.ogImage],
   },
 };
@@ -39,7 +41,9 @@ export default function FaqPage() {
           ]}
         />
         <h1 className="font-display mt-8 text-4xl text-ivory md:text-5xl">FAQ</h1>
-        <p className="mt-4 text-mist">Delivery, authenticity, returns, and cash on delivery.</p>
+        <p className="mt-4 text-mist">
+          Delivery charges, authenticity, returns, and cash on delivery.
+        </p>
 
         <div className="mt-10 space-y-3">
           {faqs.map((item) => (
@@ -60,8 +64,11 @@ export default function FaqPage() {
           ))}
         </div>
 
-        <div className="mt-10">
-          <WhatsAppButton href={waLink()}>{site.ctaLabel}</WhatsAppButton>
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <Link href="/shop" className="ghost-btn !min-h-12">
+            {site.shopCtaLabel}
+          </Link>
+          <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>{site.ctaLabel}</WhatsAppButton>
         </div>
         <p className="mt-8 text-sm text-mist/70">
           <Link href="/" className="text-gold-light hover:underline">
@@ -79,6 +86,7 @@ export default function FaqPage() {
       </main>
       <Footer />
       <StickyCta />
+      <FloatingWhatsApp />
     </>
   );
 }

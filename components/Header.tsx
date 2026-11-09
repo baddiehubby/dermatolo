@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { BRAND, navItems, site, waLink } from "@/lib/site";
+import { BRAND, navItems, site } from "@/lib/site";
+import { orderWhatsAppUrl } from "@/lib/whatsapp";
 import { BrandMark } from "./Icons";
 import { WhatsAppButton } from "./WhatsAppButton";
 
@@ -29,12 +30,17 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <WhatsAppButton
-          href={waLink()}
-          className="hidden !min-h-11 !px-4 !py-2 text-sm md:inline-flex"
-        >
-          {site.ctaLabel}
-        </WhatsAppButton>
+        <div className="hidden items-center gap-3 md:flex">
+          <Link href="/shop" className="ghost-btn !min-h-11 !px-4 !py-2 text-sm">
+            {site.shopCtaLabel}
+          </Link>
+          <WhatsAppButton
+            href={orderWhatsAppUrl({ quantity: 1 })}
+            className="!min-h-11 !px-4 !py-2 text-sm"
+          >
+            {site.ctaLabel}
+          </WhatsAppButton>
+        </div>
       </div>
       <nav
         className="no-scrollbar flex gap-1 overflow-x-auto border-t border-gold/8 px-3 py-1.5 text-sm text-mist lg:hidden"
