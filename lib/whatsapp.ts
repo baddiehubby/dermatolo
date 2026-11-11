@@ -6,6 +6,7 @@ import {
   PRODUCT_NAME,
   waLink,
   WHATSAPP_MESSAGE,
+  WHATSAPP_NUMBER,
 } from "./site";
 
 export type OrderDraft = {
@@ -47,7 +48,8 @@ export function buildOrderMessage(draft: OrderDraft): string {
   ].join("\n");
 }
 
-export function orderWhatsAppUrl(draft: OrderDraft): string {
+/** Single entry for order CTAs — always wa.me + encodeURIComponent. */
+export function orderWhatsAppUrl(draft: OrderDraft = { quantity: 1 }): string {
   return waLink(buildOrderMessage(draft));
 }
 
@@ -55,12 +57,47 @@ export function reviewHref(): string {
   return waLink(`Hi, I want to share feedback about ${PRODUCT_NAME}.`);
 }
 
+/** TikTok / Instagram / Facebook and similar WebViews often break target=_blank. */
+export function isLikelyInAppBrowser(ua: string = typeof navigator !== "undefined" ? navigator.userAgent : ""): boolean {
+  return /FBAN|FBAV|Instagram|Line\/|Twitter|TikTok|BytedanceWebview|ByteLocale|musical_ly|Snapchat|Pinterest|LinkedInApp|MicroMessenger|GSA\//i.test(
+    ua,
+  );
+}
+
+/**
+ * Navigate to WhatsApp from a direct user gesture.
+ * Same-tab assign avoids popup blockers and in-app browsers that ignore target=_blank / window.open.
+ */
+export function navigateToWhatsApp(url: string): void {
+  if (typeof window === "undefined") return;
+  window.location.assign(url);
+}
+
+/** @deprecated Prefer navigateToWhatsApp — synthetic target=_blank clicks get blocked. */
 export function openWhatsApp(url: string) {
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.target = "_blank";
-  anchor.rel = "noopener noreferrer";
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
+  navigateToWhatsApp(url);
+}
+
+export function decodeWaMessage(url: string): string | null {
+  try {
+    const text = new URL(url).searchParams.get("text");
+    return text;
+  } catch {
+    return null;
+  }
+}
+
+export function assertWaCheckoutUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    const digits = WHATSAPP_NUMBER.replace(/\D/g, "");
+    return (
+      parsed.protocol === "https:" &&
+      parsed.hostname === "wa.me" &&
+      parsed.pathname === `/${digits}` &&
+      Boolean(parsed.searchParams.get("text"))
+    );
+  } catch {
+    return false;
+  }
 }

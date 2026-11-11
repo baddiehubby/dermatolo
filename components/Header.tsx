@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { BRAND, navItems, site } from "@/lib/site";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 import { BrandMark } from "./Icons";
 import { WhatsAppButton } from "./WhatsAppButton";
 
 export function Header() {
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
+
   return (
     <header className="sticky top-0 z-40 border-b border-gold/12 bg-ink/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5">
@@ -34,10 +37,7 @@ export function Header() {
           <Link href="/shop" className="ghost-btn !min-h-11 !px-4 !py-2 text-sm">
             {site.shopCtaLabel}
           </Link>
-          <WhatsAppButton
-            href={orderWhatsAppUrl({ quantity: 1 })}
-            className="!min-h-11 !px-4 !py-2 text-sm"
-          >
+          <WhatsAppButton href={href} message={message} className="!min-h-11 !px-4 !py-2 text-sm">
             {site.ctaLabel}
           </WhatsAppButton>
         </div>

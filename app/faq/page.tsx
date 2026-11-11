@@ -9,7 +9,7 @@ import { StickyCta } from "@/components/StickyCta";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { faqJsonLd } from "@/lib/schema";
 import { faqs, pageDescription, pageTitle, site } from "@/lib/site";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("Perfume Delivery FAQ") },
@@ -29,6 +29,9 @@ export const metadata: Metadata = {
 };
 
 export default function FaqPage() {
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
+
   return (
     <>
       <JsonLd data={faqJsonLd()} />
@@ -68,7 +71,9 @@ export default function FaqPage() {
           <Link href="/shop" className="ghost-btn !min-h-12">
             {site.shopCtaLabel}
           </Link>
-          <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>{site.ctaLabel}</WhatsAppButton>
+          <WhatsAppButton href={href} message={message}>
+            {site.ctaLabel}
+          </WhatsAppButton>
         </div>
         <p className="mt-8 text-sm text-mist/70">
           <Link href="/" className="text-gold-light hover:underline">

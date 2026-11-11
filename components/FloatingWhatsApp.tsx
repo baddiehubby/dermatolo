@@ -1,17 +1,22 @@
-import { site, waLink } from "@/lib/site";
-import { WhatsAppIcon } from "./Icons";
+"use client";
+
+import { site } from "@/lib/site";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 /** Persistent floating WhatsApp affordance (desktop + mobile above sticky bar). */
 export function FloatingWhatsApp() {
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
+
   return (
-    <a
-      href={waLink()}
-      target="_blank"
-      rel="noopener noreferrer"
+    <WhatsAppButton
+      href={href}
+      message={message}
       aria-label={`${site.ctaLabel} — WhatsApp ${site.whatsappDisplay}`}
-      className="fixed bottom-[5.25rem] end-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-white shadow-[0_12px_28px_rgba(37,211,102,0.35)] transition hover:scale-105 hover:bg-[#1ebe5d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25d366] md:bottom-8 md:end-8 md:h-16 md:w-16"
+      className="!fixed bottom-[5.25rem] end-4 z-50 !flex h-14 w-14 !min-h-0 !items-center !justify-center !rounded-full !px-0 !py-0 shadow-[0_12px_28px_rgba(37,211,102,0.35)] transition hover:scale-105 hover:bg-[#1ebe5d] md:bottom-8 md:end-8 md:h-16 md:w-16 [&>svg]:h-7 [&>svg]:w-7"
     >
-      <WhatsAppIcon className="h-7 w-7" />
-    </a>
+      <span className="sr-only">{site.ctaLabel}</span>
+    </WhatsAppButton>
   );
 }

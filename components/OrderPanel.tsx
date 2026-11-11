@@ -9,8 +9,8 @@ import {
   PRODUCT_NAME,
   site,
 } from "@/lib/site";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
-import { WhatsAppIcon } from "./Icons";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 const MAX_QTY = 20;
 
@@ -26,17 +26,19 @@ export function OrderPanel({ className = "", compact = false }: OrderPanelProps)
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [contactNumber, setContactNumber] = useState("");
 
-  const subtotal = quantity * PRICE;
-  const href = useMemo(
-    () =>
-      orderWhatsAppUrl({
-        quantity,
-        customerName,
-        deliveryAddress,
-        contactNumber,
-      }),
+  const draft = useMemo(
+    () => ({
+      quantity,
+      customerName,
+      deliveryAddress,
+      contactNumber,
+    }),
     [quantity, customerName, deliveryAddress, contactNumber],
   );
+
+  const subtotal = quantity * PRICE;
+  const href = useMemo(() => orderWhatsAppUrl(draft), [draft]);
+  const message = useMemo(() => buildOrderMessage(draft), [draft]);
 
   function bump(delta: number) {
     setQuantity((q) => Math.min(MAX_QTY, Math.max(1, q + delta)));
@@ -142,23 +144,18 @@ export function OrderPanel({ className = "", compact = false }: OrderPanelProps)
       </fieldset>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="wa-btn w-full sm:w-auto"
-        >
-          <WhatsAppIcon />
+        <WhatsAppButton href={href} message={message} className="w-full sm:w-auto">
           Add to order · WhatsApp
-        </a>
-        <a
+        </WhatsAppButton>
+        <WhatsAppButton
           href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ghost-btn w-full sm:w-auto"
+          message={message}
+          showIcon={false}
+          variant="ghost"
+          className="w-full sm:w-auto"
         >
           {site.ctaLabel}
-        </a>
+        </WhatsAppButton>
       </div>
       <p className="text-xs leading-relaxed text-mist/65">
         WhatsApp {site.whatsappDisplay}. Product subtotal excludes delivery. {site.deliveryDetail}

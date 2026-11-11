@@ -36,8 +36,13 @@ export const markets = [
   { code: "US", currency: "USD", price: null, active: false },
 ] as const;
 
+/**
+ * Build a WhatsApp deep link. Number is digits-only (no +, spaces, dashes).
+ * Message is always encodeURIComponent'd for wa.me compatibility.
+ */
 export function waLink(message: string = WHATSAPP_MESSAGE): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const digits = String(WHATSAPP_NUMBER).replace(/\D/g, "");
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
 export function formatPrice(value: number = PRICE): string {

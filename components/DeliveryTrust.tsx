@@ -1,4 +1,6 @@
-import { site, waLink } from "@/lib/site";
+import { site } from "@/lib/site";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 const points = [
   {
@@ -20,6 +22,9 @@ const points = [
 ] as const;
 
 export function DeliveryTrust() {
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 md:py-20" aria-labelledby="trust-heading">
       <div className="mx-auto max-w-2xl text-center">
@@ -41,9 +46,15 @@ export function DeliveryTrust() {
       </ul>
       <p className="mt-8 text-center text-sm text-mist">
         Questions?{" "}
-        <a href={waLink()} target="_blank" rel="noopener noreferrer" className="text-gold-light hover:underline">
+        <WhatsAppButton
+          href={href}
+          message={message}
+          showIcon={false}
+          variant="ghost"
+          className="!inline !min-h-0 !border-0 !bg-transparent !p-0 !shadow-none text-gold-light hover:underline"
+        >
           WhatsApp {site.whatsappDisplay}
-        </a>
+        </WhatsAppButton>
       </p>
     </section>
   );

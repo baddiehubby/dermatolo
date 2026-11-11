@@ -4,7 +4,9 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { StickyCta } from "@/components/StickyCta";
-import { BRAND, pageTitle, site, waLink } from "@/lib/site";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { BRAND, pageTitle, site } from "@/lib/site";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("Privacy") },
@@ -14,6 +16,9 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
+
   return (
     <>
       <Header />
@@ -21,9 +26,15 @@ export default function PrivacyPage() {
         <h1 className="font-display text-4xl text-ivory">Privacy</h1>
         <p className="mt-6">
           Orders are placed on WhatsApp via{" "}
-          <a href={waLink()} className="text-gold-light hover:underline">
+          <WhatsAppButton
+            href={href}
+            message={message}
+            showIcon={false}
+            variant="ghost"
+            className="!inline !min-h-0 !border-0 !bg-transparent !p-0 !shadow-none text-gold-light hover:underline"
+          >
             {site.ctaLabel}
-          </a>
+          </WhatsAppButton>
           . This website does not take card payments. Optional name, address, and phone fields on
           the shop page only fill your WhatsApp message in your browser — they are not stored on our
           server as a checkout database.

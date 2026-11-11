@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { BOTTLE_ML, BRAND, formatPrice, navItems, site } from "@/lib/site";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 import { BrandMark } from "./Icons";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 export function Footer() {
   const orderHref = orderWhatsAppUrl({ quantity: 1 });
+  const orderMessage = buildOrderMessage({ quantity: 1 });
   return (
     <footer className="border-t border-gold/20 bg-[#080807] pb-28 pt-16 md:pb-16">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-3">
@@ -29,22 +31,24 @@ export function Footer() {
           <Link href="/shop" className="block text-gold-light hover:underline">
             {site.shopCtaLabel}
           </Link>
-          <a
+          <WhatsAppButton
             href={orderHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-gold-light hover:underline"
+            message={orderMessage}
+            showIcon={false}
+            variant="ghost"
+            className="!block !min-h-0 !justify-start !border-0 !bg-transparent !p-0 !shadow-none text-gold-light hover:underline"
           >
             {site.ctaLabel}
-          </a>
-          <a
+          </WhatsAppButton>
+          <WhatsAppButton
             href={orderHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block tabular-nums hover:text-gold-light"
+            message={orderMessage}
+            showIcon={false}
+            variant="ghost"
+            className="!block !min-h-0 !justify-start !border-0 !bg-transparent !p-0 !shadow-none tabular-nums hover:text-gold-light hover:underline"
           >
             WhatsApp {site.whatsappDisplay}
-          </a>
+          </WhatsAppButton>
           <Link href="/privacy" className="block hover:text-gold-light">
             Privacy
           </Link>

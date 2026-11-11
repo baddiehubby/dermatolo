@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { BOTTLE_ML, formatPrice, site } from "@/lib/site";
 import { WhatsAppButton } from "./WhatsAppButton";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 
 /**
  * Homepage conversion block — luxury brand energy, WhatsApp order CTA.
  */
 export function ComparisonSection() {
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
+
   return (
     <section
       className="relative mx-auto max-w-3xl px-4 py-16 md:py-24"
@@ -41,7 +44,9 @@ export function ComparisonSection() {
         <Link href="/shop" className="ghost-btn !min-h-12 !px-6 text-sm">
           {site.shopCtaLabel}
         </Link>
-        <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>Order now</WhatsAppButton>
+        <WhatsAppButton href={href} message={message}>
+          Order now
+        </WhatsAppButton>
       </div>
 
       <p className="mt-10 text-center text-sm text-mist/80">

@@ -23,7 +23,8 @@ import {
   pageTitle,
   site,
 } from "@/lib/site";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("Luxury Unisex Perfume Pakistan") },
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const reviews = await getDisplayedReviews();
   const orderHref = orderWhatsAppUrl({ quantity: 1 });
+  const orderMessage = buildOrderMessage({ quantity: 1 });
 
   return (
     <>
@@ -107,9 +109,9 @@ export default async function HomePage() {
               <Link href="/shop" className="ghost-btn !min-h-12 !px-8 text-sm tracking-wide">
                 {site.shopCtaLabel}
               </Link>
-              <a href={orderHref} target="_blank" rel="noopener noreferrer" className="wa-btn !min-h-12">
+              <WhatsAppButton href={orderHref} message={orderMessage} className="!min-h-12">
                 {site.ctaLabel}
-              </a>
+              </WhatsAppButton>
             </div>
             <div className="reveal mt-10 w-full max-w-2xl" style={{ animationDelay: "360ms" }}>
               <TrustStrip />

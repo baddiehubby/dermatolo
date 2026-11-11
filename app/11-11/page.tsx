@@ -18,7 +18,7 @@ import {
   pageTitle,
   site,
 } from "@/lib/site";
-import { orderWhatsAppUrl } from "@/lib/whatsapp";
+import { buildOrderMessage, orderWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle("11.11 Sale Perfume Pakistan") },
@@ -42,6 +42,8 @@ export const metadata: Metadata = {
 export default function ElevenElevenPage() {
   const target = getElevenElevenTarget();
   const year = target.getFullYear();
+  const href = orderWhatsAppUrl({ quantity: 1 });
+  const message = buildOrderMessage({ quantity: 1 });
 
   return (
     <>
@@ -85,7 +87,9 @@ export default function ElevenElevenPage() {
             <Link href="/shop" className="ghost-btn !min-h-12">
               {site.shopCtaLabel}
             </Link>
-            <WhatsAppButton href={orderWhatsAppUrl({ quantity: 1 })}>{site.ctaLabel}</WhatsAppButton>
+            <WhatsAppButton href={href} message={message}>
+              {site.ctaLabel}
+            </WhatsAppButton>
           </div>
           <p className="text-sm text-mist/65">WhatsApp {site.whatsappDisplay}</p>
         </div>

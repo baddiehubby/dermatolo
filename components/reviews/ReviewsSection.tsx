@@ -1,7 +1,9 @@
 import type { Review } from "@/lib/product";
+import { PRODUCT_NAME } from "@/lib/site";
 import { summarizeReviews, usableReviews } from "@/lib/reviews";
 import { reviewHref } from "@/lib/whatsapp";
-import { BrandMark, WhatsAppIcon } from "../Icons";
+import { BrandMark } from "../Icons";
+import { WhatsAppButton } from "../WhatsAppButton";
 import { ReviewCard } from "./ReviewCard";
 import { ReviewForm } from "./ReviewForm";
 import { ReviewPlaceholder } from "./ReviewPlaceholder";
@@ -65,15 +67,14 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
           <a href="#review-form" className="ghost-btn w-full !min-h-12 sm:w-auto">
             Write a review
           </a>
-          <a
+          <WhatsAppButton
             href={reviewHref()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ghost-btn w-full gap-2 !min-h-12 sm:w-auto"
+            message={`Hi, I want to share feedback about ${PRODUCT_NAME}.`}
+            variant="ghost"
+            className="w-full !min-h-12 sm:w-auto"
           >
-            <WhatsAppIcon />
             Share via WhatsApp
-          </a>
+          </WhatsAppButton>
         </div>
 
         <div id="review-form" className="relative mx-auto mt-10 max-w-2xl scroll-mt-28">
