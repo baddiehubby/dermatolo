@@ -8,7 +8,7 @@ Wired in `lib/site.ts` → `site.videos`.
 |------|--------|--------|--------|
 | Intro (primary, voice-on) | `/public/videos/money-intro.mp4` | `/public/videos/posters/money-intro.jpg` | Prior Desktop `yt` short |
 | Home hero | same as intro | same as intro | Desktop `yt` folder |
-| Shop / product showcase | `/public/videos/money-product.mp4` | `/public/videos/posters/money-product.jpg` | Preserved (kept on disk) |
+| Shop / product showcase | `/public/videos/money-product.mp4` | `/public/videos/posters/money-product.jpg` | Poster re-extracted from MONEY product MP4 (was leftover Eagle Delay Spray still) |
 | Legacy atmosphere | `/public/videos/money-atmosphere.mp4` | `/public/videos/posters/money-atmosphere.jpg` | Preserved (kept on disk) |
 | Films strip A | `/public/videos/money-cinema-a.mp4` | `/public/videos/posters/money-cinema-a.jpg` | `YTShort_11Nov2026_12_40_19.mp4` |
 | Films strip B | `/public/videos/money-cinema-b.mp4` | `/public/videos/posters/money-cinema-b.jpg` | `YTShort_11Nov2026_21_03_52 (1).mp4` |
