@@ -74,6 +74,7 @@ export default async function ReviewsPage() {
               poster={site.videos.cinemaA.poster}
               label={`${BRAND} perfume cinema A`}
               caption="Cinema"
+              withAudio
               aspectRatio="4 / 5"
               className="reveal"
             />
@@ -82,6 +83,7 @@ export default async function ReviewsPage() {
               poster={site.videos.cinemaB.poster}
               label={`${BRAND} perfume cinema B`}
               caption="Atmosphere"
+              withAudio
               aspectRatio="4 / 5"
               className="reveal"
             />

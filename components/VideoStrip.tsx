@@ -2,8 +2,9 @@ import { BrandVideo } from "@/components/BrandVideo";
 import { site } from "@/lib/site";
 
 /**
- * Premium atmosphere strip — lifestyle motion, not product CGI claims.
- * Uses the latest Desktop/yt cinema shorts; older money-product / money-atmosphere files remain on disk.
+ * Premium cinema strip — lifestyle motion, not product CGI claims.
+ * Desktop/yt shorts play with voice after Tap for sound (browsers block unmuted autoplay).
+ * Older money-product / money-atmosphere files remain on disk.
  */
 export function VideoStrip() {
   const clips = [
@@ -32,7 +33,7 @@ export function VideoStrip() {
             Atmosphere in motion
           </h2>
           <p className="mt-4 text-sm text-mist leading-relaxed">
-            Short films that set the tone — confident, modern, unisex.
+            Short films that set the tone — tap for sound on either reel.
           </p>
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
@@ -43,6 +44,7 @@ export function VideoStrip() {
               poster={clip.poster}
               label={clip.label}
               caption={clip.caption}
+              withAudio
               aspectRatio="4 / 5"
               className="reveal"
             />

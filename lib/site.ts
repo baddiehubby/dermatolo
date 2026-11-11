@@ -94,10 +94,9 @@ export const site = {
   ogImage: "/og/money-og.svg",
   /**
    * Video assets under /public/videos.
-   * Intro: Desktop/yt short — primary brand film with click-to-play voice (see BrandVideo withAudio).
-   * Cinema A/B: fresh Desktop/yt shorts for the films strip (do not delete older money-*.mp4 files).
-   * Other clips may still be temporary atmosphere footage. Use neutral alts — do not claim MONEY bottle CGI.
-   * NOTE: Browsers block unmuted autoplay without a user gesture; intro must use Tap for sound / Play.
+   * Intro + Cinema A/B: Desktop/yt shorts with click-to-play voice (BrandVideo withAudio / Tap for sound).
+   * Do not delete older money-*.mp4 files. Other clips may still be muted atmosphere.
+   * NOTE: Browsers block unmuted autoplay without a user gesture — never autoplay these with sound.
    */
   videos: {
     /** Primary brand intro — homepage hero; play with sound after user tap. */

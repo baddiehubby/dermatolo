@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+
+/** Dispatched when an audible BrandVideo begins playback — peers pause so only one has voice. */
+const BRAND_VIDEO_AUDIO_PLAY = "brand-video-audio-play";
 
 type BrandVideoProps = {
   /** MP4 path under /public, e.g. "/videos/money-hero.mp4". Null = poster only. */
@@ -15,9 +18,9 @@ type BrandVideoProps = {
   /** Optional caption strip under the frame (atmosphere gallery). */
   caption?: string;
   /**
-   * Audible / voice-on mode (intro film).
+   * Audible / voice-on mode (intro + cinema films).
    * Browsers block unmuted autoplay — starts on poster with Play / Tap for sound.
-   * User gesture starts playback with muted=false. Atmosphere clips should leave this false.
+   * User gesture starts playback with muted=false. Pure atmosphere loops leave this false.
    */
   withAudio?: boolean;
   /** Alias of withAudio. */
@@ -29,6 +32,7 @@ type BrandVideoProps = {
  * - Default: lazy muted looping atmosphere (IntersectionObserver).
  * - withAudio / audible: click-to-play with sound (no unmuted autoplay).
  * - prefers-reduced-motion → static poster / placeholder (no autoplay).
+ * - Only one audible BrandVideo plays at a time (peers pause on start).
  */
 export function BrandVideo({
   src = null,
@@ -41,6 +45,7 @@ export function BrandVideo({
   audible = false,
 }: BrandVideoProps) {
   const wantsAudio = withAudio || audible;
+  const instanceId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [reduced, setReduced] = useState<boolean | null>(null);
@@ -49,6 +54,12 @@ export function BrandVideo({
   const [started, setStarted] = useState(false);
   const [playing, setPlaying] = useState(false);
 
+  const claimExclusiveAudio = () => {
+    window.dispatchEvent(
+      new CustomEvent(BRAND_VIDEO_AUDIO_PLAY, { detail: { id: instanceId } }),
+    );
+  };
+
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => setReduced(media.matches);
@@ -56,6 +67,21 @@ export function BrandVideo({
     media.addEventListener("change", sync);
     return () => media.removeEventListener("change", sync);
   }, []);
+
+  useEffect(() => {
+    if (!wantsAudio) return;
+    const onPeerPlay = (event: Event) => {
+      const peerId = (event as CustomEvent<{ id: string }>).detail?.id;
+      if (!peerId || peerId === instanceId) return;
+      const video = videoRef.current;
+      if (video && !video.paused) {
+        video.pause();
+        setPlaying(false);
+      }
+    };
+    window.addEventListener(BRAND_VIDEO_AUDIO_PLAY, onPeerPlay);
+    return () => window.removeEventListener(BRAND_VIDEO_AUDIO_PLAY, onPeerPlay);
+  }, [wantsAudio, instanceId]);
 
   useEffect(() => {
     if (reduced !== false || !src || wantsAudio) return;
@@ -92,6 +118,7 @@ export function BrandVideo({
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !showAudibleVideo || !src || !started) return;
+    claimExclusiveAudio();
     video.muted = false;
     const pending = video.play();
     if (pending) {
@@ -103,6 +130,8 @@ export function BrandVideo({
           video.play().then(() => setPlaying(true)).catch(() => undefined);
         });
     }
+    // claimExclusiveAudio is stable per instanceId; intentionally omit from deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run when audible playback is requested
   }, [showAudibleVideo, src, started]);
 
   const startWithSound = () => {
@@ -117,6 +146,7 @@ export function BrandVideo({
       return;
     }
     if (video.paused) {
+      claimExclusiveAudio();
       video.muted = false;
       video.play().then(() => setPlaying(true)).catch(() => undefined);
     } else {
