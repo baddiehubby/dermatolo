@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!site.url) return [];
 
   const lastModified = new Date();
-  const paths = ["/", "/shop", "/11-11", "/about", "/faq", "/privacy", "/terms"] as const;
+  const paths = ["/", "/shop", "/reviews", "/11-11", "/about", "/faq", "/privacy", "/terms"] as const;
 
   return paths.map((path, index) => ({
     url: `${site.url}${path === "/" ? "/" : path}`,

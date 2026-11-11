@@ -66,6 +66,10 @@ export default function AboutPage() {
             Shop
           </Link>
           {" · "}
+          <Link href="/reviews" className="text-gold-light hover:underline">
+            Reviews
+          </Link>
+          {" · "}
           <Link href="/11-11" className="text-gold-light hover:underline">
             11.11
           </Link>

@@ -3,21 +3,21 @@ import { site } from "@/lib/site";
 
 /**
  * Premium atmosphere strip — lifestyle motion, not product CGI claims.
- * Footage may be temporary brand-atmosphere until real MONEY assets land.
+ * Uses the latest Desktop/yt cinema shorts; older money-product / money-atmosphere files remain on disk.
  */
 export function VideoStrip() {
   const clips = [
     {
-      key: "product",
-      src: site.videos.product.src,
-      poster: site.videos.product.poster,
-      label: "MONEY perfume lifestyle motion",
-      caption: "Lifestyle",
+      key: "cinema-a",
+      src: site.videos.cinemaA.src,
+      poster: site.videos.cinemaA.poster,
+      label: "MONEY perfume cinema film",
+      caption: "Cinema",
     },
     {
-      key: "atmosphere",
-      src: site.videos.atmosphere.src,
-      poster: site.videos.atmosphere.poster,
+      key: "cinema-b",
+      src: site.videos.cinemaB.src,
+      poster: site.videos.cinemaB.poster,
       label: "MONEY perfume atmosphere film",
       caption: "Atmosphere",
     },

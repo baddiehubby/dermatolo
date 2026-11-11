@@ -95,6 +95,7 @@ export const site = {
   /**
    * Video assets under /public/videos.
    * Intro: Desktop/yt short — primary brand film with click-to-play voice (see BrandVideo withAudio).
+   * Cinema A/B: fresh Desktop/yt shorts for the films strip (do not delete older money-*.mp4 files).
    * Other clips may still be temporary atmosphere footage. Use neutral alts — do not claim MONEY bottle CGI.
    * NOTE: Browsers block unmuted autoplay without a user gesture; intro must use Tap for sound / Play.
    */
@@ -116,13 +117,42 @@ export const site = {
       src: "/videos/money-atmosphere.mp4",
       poster: "/videos/posters/money-atmosphere.jpg",
     },
+    /** Fresh Desktop/yt short — films strip / reviews-adjacent cinema. */
+    cinemaA: {
+      src: "/videos/money-cinema-a.mp4",
+      poster: "/videos/posters/money-cinema-a.jpg",
+    },
+    /** Fresh Desktop/yt short — films strip / reviews-adjacent cinema. */
+    cinemaB: {
+      src: "/videos/money-cinema-b.mp4",
+      poster: "/videos/posters/money-cinema-b.jpg",
+    },
   },
   markets,
 };
 
+/**
+ * Owner-supplied customer attributions for publication.
+ * Source: customer feedback shared by brand for publication.
+ * Quote-only — no fabricated star ratings, photos, or Verified Purchase badges.
+ */
+export const testimonials = [
+  {
+    id: "testimonial-sarak-malik",
+    name: "Sarak Malik",
+    quote: "It's a very good perfume.",
+  },
+  {
+    id: "testimonial-faraz",
+    name: "Faraz",
+    quote: "The notes are soothing.",
+  },
+] as const;
+
 export const navItems = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
+  { href: "/reviews", label: "Reviews" },
   { href: "/11-11", label: "11.11 Sale" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },

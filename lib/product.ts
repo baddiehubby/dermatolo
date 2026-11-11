@@ -26,7 +26,11 @@ export const reviewSettings = {
   autoPublish: false,
 };
 
-/** Owner-curated published reviews (empty until real verified ones exist). Never fabricate. */
+/**
+ * Owner-curated published reviews with star ratings.
+ * Marketing testimonials without ratings live in `testimonials` (lib/site.ts) —
+ * do not invent AggregateRating averages from those quotes.
+ */
 export const product = {
   reviews: [] as Review[],
 };

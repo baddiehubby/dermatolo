@@ -1,5 +1,5 @@
 import type { Review } from "@/lib/product";
-import { PRODUCT_NAME } from "@/lib/site";
+import { PRODUCT_NAME, testimonials } from "@/lib/site";
 import { summarizeReviews, usableReviews } from "@/lib/reviews";
 import { reviewHref } from "@/lib/whatsapp";
 import { BrandMark } from "../Icons";
@@ -8,18 +8,27 @@ import { ReviewCard } from "./ReviewCard";
 import { ReviewForm } from "./ReviewForm";
 import { ReviewPlaceholder } from "./ReviewPlaceholder";
 import { StarRating } from "./StarRating";
+import { TestimonialCard } from "./TestimonialCard";
 
 type ReviewsSectionProps = {
-  /** Real published reviews only. Empty array renders the honest empty state. */
+  /** Real published (moderated) reviews only. Star average uses these alone. */
   reviews: readonly Review[];
+  /** When true, skip the write-a-review form (e.g. compact homepage teaser). */
+  showForm?: boolean;
 };
 
-export function ReviewsSection({ reviews }: ReviewsSectionProps) {
+export function ReviewsSection({ reviews, showForm = true }: ReviewsSectionProps) {
   const real = usableReviews(reviews);
   const summary = summarizeReviews(real);
+  const hasTestimonials = testimonials.length > 0;
+  const hasContent = hasTestimonials || Boolean(summary);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 md:py-24" aria-labelledby="reviews-heading">
+    <section
+      id="reviews"
+      className="mx-auto max-w-6xl scroll-mt-28 px-4 py-16 md:py-24"
+      aria-labelledby="reviews-heading"
+    >
       <div className="reviews-shell reveal relative overflow-hidden border border-gold/20 bg-ink-100/60 px-4 py-12 sm:px-8 md:px-10 md:py-14">
         <BrandMark className="pointer-events-none absolute -end-10 -top-10 h-56 w-56 text-gold/[0.06] md:h-72 md:w-72" />
 
@@ -29,7 +38,9 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
             What customers say
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-mist md:text-base">
-            Genuine published reviews only. New submissions are moderated before they appear here.
+            {summary
+              ? "Customer feedback shared by the brand for publication, plus moderated storefront reviews. New submissions stay pending until approved."
+              : "Customer feedback shared by the brand for publication. New submissions stay pending until approved."}
           </p>
 
           {summary ? (
@@ -47,13 +58,16 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
         </header>
 
         <div className="relative mt-10">
-          {summary ? (
+          {hasContent ? (
             <div
               role="region"
               aria-label="Customer reviews, swipe horizontally"
               tabIndex={0}
               className="review-track no-scrollbar"
             >
+              {testimonials.map((item) => (
+                <TestimonialCard key={item.id} name={item.name} quote={item.quote} />
+              ))}
               {real.map((review) => (
                 <ReviewCard key={review.id} review={review} />
               ))}
@@ -64,9 +78,15 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
         </div>
 
         <div className="relative mt-10 flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:gap-4">
-          <a href="#review-form" className="ghost-btn w-full !min-h-12 sm:w-auto">
-            Write a review
-          </a>
+          {showForm ? (
+            <a href="#review-form" className="ghost-btn w-full !min-h-12 sm:w-auto">
+              Write a review
+            </a>
+          ) : (
+            <a href="/reviews#review-form" className="ghost-btn w-full !min-h-12 sm:w-auto">
+              Write a review
+            </a>
+          )}
           <WhatsAppButton
             href={reviewHref()}
             message={`Hi, I want to share feedback about ${PRODUCT_NAME}.`}
@@ -77,12 +97,15 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
           </WhatsAppButton>
         </div>
 
-        <div id="review-form" className="relative mx-auto mt-10 max-w-2xl scroll-mt-28">
-          <ReviewForm />
-          <p className="mt-4 text-center text-xs leading-6 text-mist/70">
-            Submitted reviews stay pending until approved. Average and star counts only use published reviews.
-          </p>
-        </div>
+        {showForm ? (
+          <div id="review-form" className="relative mx-auto mt-10 max-w-2xl scroll-mt-28">
+            <ReviewForm />
+            <p className="mt-4 text-center text-xs leading-6 text-mist/70">
+              Submitted reviews stay pending until approved. Average and star counts only use published
+              moderated reviews — not quote testimonials.
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   );
